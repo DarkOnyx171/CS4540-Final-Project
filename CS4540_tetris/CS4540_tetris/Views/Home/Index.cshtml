@@ -2,7 +2,18 @@
     ViewData["Title"] = "Home Page";
 }
 
+<script src="~/lib/pixi/pixi.min.js"></script>
+
+<style>
+    #game_area {
+        text-align: center;
+    }
+</style>
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">TETRIS HERE</h1>
+    <p class="game_area">
+        <canvas id="game"></canvas>
+        <script src="~/js/tetris.js"></script>
+    </p>
 </div>
