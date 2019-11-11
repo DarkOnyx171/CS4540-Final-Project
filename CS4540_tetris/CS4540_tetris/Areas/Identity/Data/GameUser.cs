@@ -10,5 +10,6 @@ namespace CS4540_tetris.Areas.Identity.Data
     public class GameUser : IdentityUser
     {
         override public string UserName { get; set; }
+        public string NickName { get; set; }
     }
 }
