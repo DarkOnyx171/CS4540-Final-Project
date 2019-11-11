@@ -1,0 +1,55 @@
+﻿@page
+@model CS4540_tetris.Views.ScoresModel
+
+@{
+    ViewData["Title"] = "Scores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Scores</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Score[0].Value)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Score[0].Nickname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Score[0].UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Score[0].GameMode)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Score) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nickname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GameMode)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ScoreID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ScoreID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ScoreID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

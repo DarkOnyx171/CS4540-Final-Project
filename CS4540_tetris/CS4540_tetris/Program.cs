@@ -31,7 +31,7 @@ namespace CS4540_tetris
                 try
                 {
                     var context = services.GetRequiredService<ScoreContext>();
-                    context.Database.EnsureCreated();
+                    DbInitializer.Initialize(context);
                 }
                 catch (Exception ex)
                 {
