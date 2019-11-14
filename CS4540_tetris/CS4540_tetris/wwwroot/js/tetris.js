@@ -17,3 +17,15 @@ let app = new PIXI.Application({
 
 //Add the canvas that Pixi automatically created for you to the HTML document
 document.getElementById("game_area").appendChild(app.views);
+
+
+
+const ROW = 20;
+const COL = COLUMN = 10;
+
+let board = [];
+let board2 = [];
+
+
+
+
