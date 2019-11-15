@@ -343,7 +343,7 @@ Piece.prototype.lock = function () {
                 alert("Game Over");
                 // stop request animation frame
                 gameOver = true;
-                break;
+                return;
             }
             // we lock the piece
             board[this.y + r][this.x + c] = this.color;
@@ -429,6 +429,7 @@ function CONTROL(event) {
 
 let dropStart = Date.now();
 let gameOver = false;
+
 function drop() {
     let now = Date.now();
     let delta = now - dropStart;
