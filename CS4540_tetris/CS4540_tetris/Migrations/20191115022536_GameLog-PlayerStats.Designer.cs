@@ -4,14 +4,16 @@ using CS4540_tetris.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CS4540_tetris.Migrations
 {
     [DbContext(typeof(ScoreContext))]
-    partial class ScoreContextModelSnapshot : ModelSnapshot
+    [Migration("20191115022536_GameLog-PlayerStats")]
+    partial class GameLogPlayerStats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,6 +92,9 @@ namespace CS4540_tetris.Migrations
                     b.Property<int>("Mode")
                         .HasColumnType("int");
 
+                    b.Property<int>("MultiPlayerLogID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Player")
                         .HasColumnType("nvarchar(max)");
 
@@ -98,35 +103,9 @@ namespace CS4540_tetris.Migrations
 
                     b.HasKey("GameID");
 
+                    b.HasIndex("MultiPlayerLogID");
+
                     b.ToTable("GameLogs");
-                });
-
-            modelBuilder.Entity("CS4540_tetris.Models.MultiPlayerLog", b =>
-                {
-                    b.Property<int>("MultiPlayerLogID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("GameLogOneGameID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("GameLogTwoGameID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GameOneID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GameTwoID")
-                        .HasColumnType("int");
-
-                    b.HasKey("MultiPlayerLogID");
-
-                    b.HasIndex("GameLogOneGameID");
-
-                    b.HasIndex("GameLogTwoGameID");
-
-                    b.ToTable("MultiPlayerLogs");
                 });
 
             modelBuilder.Entity("CS4540_tetris.Models.PlayerStats", b =>
@@ -188,15 +167,13 @@ namespace CS4540_tetris.Migrations
                     b.ToTable("Scores");
                 });
 
-            modelBuilder.Entity("CS4540_tetris.Models.MultiPlayerLog", b =>
+            modelBuilder.Entity("CS4540_tetris.Models.GameLog", b =>
                 {
-                    b.HasOne("CS4540_tetris.Models.GameLog", "GameLogOne")
+                    b.HasOne("CS4540_tetris.Models.GameLog", "MultiPlayerLog")
                         .WithMany()
-                        .HasForeignKey("GameLogOneGameID");
-
-                    b.HasOne("CS4540_tetris.Models.GameLog", "GameLogTwo")
-                        .WithMany()
-                        .HasForeignKey("GameLogTwoGameID");
+                        .HasForeignKey("MultiPlayerLogID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CS4540_tetris.Models.PlayerStats", b =>
