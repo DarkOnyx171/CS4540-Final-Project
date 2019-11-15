@@ -2,8 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CS4540_tetris.Areas.Identity.Data;
 using CS4540_tetris.Data;
+using CS4540_tetris.Models;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,8 +33,10 @@ namespace CS4540_tetris
 
                 try
                 {
-                    var context = services.GetRequiredService<ScoreContext>();
-                    DbInitializer.Initialize(context);
+                    var scorecontext = services.GetRequiredService<ScoreContext>();
+                    var usercontext = services.GetRequiredService<UserContext>();
+                    var userManager = services.GetRequiredService<UserManager<GameUser>>();
+                    DbInitializer.Initialize(scorecontext, usercontext, userManager);
                 }
                 catch (Exception ex)
                 {
