@@ -193,6 +193,7 @@ board[19][9] = 0xFF0000;
 
 // draw the board
 function drawBoard() {
+    graphics.clear();
     for (r = 0; r < ROW; r++) {
         for (c = 0; c < COL; c++) {
             drawSquare(c, r, board[r][c]);
