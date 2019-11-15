@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using CS4540_tetris.Models;
 using Microsoft.AspNetCore.Authorization;
+using CS4540_tetris.Data;
+using CS4540_tetris.Areas.Identity.Data;
 
 namespace CS4540_tetris.Controllers
 {
@@ -15,15 +17,29 @@ namespace CS4540_tetris.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        //TO establish a DB for this controller
+        private readonly ScoreContext _scorecontext;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ScoreContext scorecontext)
         {
             _logger = logger;
+            _scorecontext = scorecontext;
         }
 
         //accessible to everyone
         [AllowAnonymous]
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Scores()
+        {
+            //sort the scores so we can display
+            return View(_scorecontext.Scores.OrderBy(hs => hs.Value).ToList());
+        }
+
+        public IActionResult Stats()
         {
             return View();
         }

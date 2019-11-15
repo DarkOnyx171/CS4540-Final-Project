@@ -52,7 +52,6 @@ namespace CS4540_tetris.Data
                 user.NickName = "Gorl";
                 user.Email = "gamegorl@tetrominoes.com";
                 user.EmailConfirmed = true;
-                //user.Role = "Instructor";
 
                 IdentityResult result = userManager.CreateAsync
                 (user, "123ABC!@#def").Result;
@@ -65,7 +64,6 @@ namespace CS4540_tetris.Data
                 user.Email = "gamealien@tetrominoes.com";
                 user.NickName = "Alien";
                 user.EmailConfirmed = true;
-                //user.Role = "Instructor";
 
                 IdentityResult result = userManager.CreateAsync
                 (user, "123ABC!@#def").Result;
