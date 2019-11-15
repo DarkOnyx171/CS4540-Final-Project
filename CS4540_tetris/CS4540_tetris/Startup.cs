@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using CS4540_tetris.Data;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using CS4540_tetris.Hubs;
 
 namespace CS4540_tetris
 {
@@ -32,6 +33,8 @@ namespace CS4540_tetris
 
             services.AddDbContext<ScoreContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ScoreContext")));
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +62,7 @@ namespace CS4540_tetris
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<GameHub>("/chatHub");
             });
         }
     }

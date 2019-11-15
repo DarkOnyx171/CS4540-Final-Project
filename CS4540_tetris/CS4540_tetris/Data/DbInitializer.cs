@@ -47,7 +47,7 @@ namespace CS4540_tetris.Data
                 Nickname = "Boi",
                 UserName = "gameboi@tetrominoes.com",
                 //TODO how to initialize gamemode if enum?
-                //GameMode = 1;
+                GameMode = GameMode.Single_Player
             },
             new Score{
                 Value = 2000,
