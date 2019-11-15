@@ -1,27 +1,31 @@
 ﻿//put a header here
 
 
-let type = "WebGL"
-let Application = PIXI.Application,
-    Sprite = PIXI.Sprite;
+//let type = "WebGL"
+//let Application = PIXI.Application,
+//    Sprite = PIXI.Sprite;
 
-if (!PIXI.utils.isWebGLSupported()) {
-    type = "canvas"
-}
+//if (!PIXI.utils.isWebGLSupported()) {
+//    type = "canvas"
+//}
 
-//Create a Pixi Application
-let app = new Application({
-    width: 200,
-    height: 400,
-    view: document.getElementById("game")
-});
+////Create a Pixi Application
+//let app = new Application({
+//    width: 200,
+//    height: 400,
+//    view: document.getElementById("game")
+//});
 
-var graphics = new PIXI.Graphics();
-app.renderer.backgroundColor = 0x000000;
+//var graphics = new PIXI.Graphics();
+//app.renderer.backgroundColor = VACANT;
+
+const cvs = document.getElementById("game");
+const ctx = cvs.getContext("2d");
 
 const ROW = 20;
 const COL = COLUMN = 10;
 const SQ = squareSize = 20;
+const VACANT = "WHITE";
 const I = [
     [
         [0, 0, 0, 0],
@@ -173,43 +177,50 @@ const Z = [
     ]
 ];
 
+//function drawSquare(x, y, color) {
+//    graphics.beginFill(color);
+//    graphics.drawRect(x*SQ, y*SQ, SQ, SQ);
+//    graphics.endFill();
+//}
 function drawSquare(x, y, color) {
-    graphics.beginFill(color);
-    graphics.drawRect(x*SQ, y*SQ, SQ, SQ); // drawRect(x, y, width, height)
-    graphics.endFill();
+    ctx.fillStyle = color;
+    ctx.fillRect(x * SQ, y * SQ, SQ, SQ);
+
+    ctx.strokeStyle = "BLACK";
+    ctx.strokeRect(x * SQ, y * SQ, SQ, SQ);
 }
 
 let board = [];
 for (r = 0; r < ROW; r++) {
     board[r] = [];
     for (c = 0; c < COL; c++) {
-        board[r][c] = 0x000000;
+        board[r][c] = VACANT;
     }
 }
 
 // draw the board
 function drawBoard() {
-    graphics.clear();
+    //graphics.clear();
     //app.stage.removeChildren();
     for (r = 0; r < ROW; r++) {
         for (c = 0; c < COL; c++) {
             drawSquare(c, r, board[r][c]);
         }
     }
-    app.stage.addChild(graphics);
+    //app.stage.addChild(graphics);
 }
 
 drawBoard();
 
 
 const PIECES = [
-    [Z, 0xFF0000],
-    [S, 0x00FF00],
-    [T, 0xFFFF00],
-    [O, 0x0000FF],
-    [L, 0x808080],
-    [I, 0x00FFFF],
-    [J, 0xFFA500]
+    [Z, "red"],
+    [S, "green"],
+    [T, "yellow"],
+    [O, "blue"],
+    [L, "purple"],
+    [I, "cyan"],
+    [J, "orange"]
 ];
 
 // generate random pieces
@@ -254,11 +265,11 @@ Piece.prototype.draw = function () {
 
 // undraw a piece
 Piece.prototype.unDraw = function () {
-    return;
-    for (var i = app.stage.children.length - 1; i >= 0; i--)
-    {
-        app.stage.removeChild(app.stage.children[i]);
-    };
+    this.fill("white");
+    //for (var i = app.stage.children.length - 1; i >= 0; i--)
+    //{
+    //    app.stage.removeChild(app.stage.children[i]);
+    //};
 }
 
 // move Down the piece
@@ -342,7 +353,7 @@ Piece.prototype.lock = function () {
     for (r = 0; r < ROW; r++) {
         let isRowFull = true;
         for (c = 0; c < COL; c++) {
-            isRowFull = isRowFull && (board[r][c] != 0x000000);
+            isRowFull = isRowFull && (board[r][c] != VACANT);
         }
         if (isRowFull) {
             // if the row is full
@@ -354,7 +365,7 @@ Piece.prototype.lock = function () {
             }
             // the top row board[0][..] has no row above it
             for (c = 0; c < COL; c++) {
-                board[0][c] = 0x000000;
+                board[0][c] = VACANT;
             }
             // increment the score
             score += 10;
@@ -387,7 +398,7 @@ Piece.prototype.collision = function (x, y, piece) {
                 continue;
             }
             // check if there is a locked piece alrady in place
-            if (board[newY][newX] != 0x000000) {
+            if (board[newY][newX] != VACANT) {
                 return true;
             }
         }
