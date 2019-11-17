@@ -40,6 +40,7 @@ namespace CS4540_tetris
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseRouting();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -53,8 +54,6 @@ namespace CS4540_tetris
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -63,6 +62,8 @@ namespace CS4540_tetris
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapHub<GameHub>("/chatHub");
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
             });
         }
     }
