@@ -28,4 +28,8 @@ class Piece {
 
         return !this.tetromino[row][col];
     }
+
+    getLength() {
+        return this.tetromino.length;
+    }
 }

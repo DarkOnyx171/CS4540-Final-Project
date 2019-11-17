@@ -64,12 +64,12 @@ class Tetris {
     }
 
     collision(x, y) {
-        pieceX = piece.getX()
-        pieceY = piece.getY()
+        pieceX = this.piece.getX()
+        pieceY = this.piece.getY()
 
-        for (r = 0; r < piece.length; r++) {
-            for (c = 0; c < piece.length; c++) {
-                if (piece.isEmpty(r, c)) {
+        for (r = 0; r < this.piece.getLength(); r++) {
+            for (c = 0; c < this.piece.getLength(); c++) {
+                if (this.piece.isEmpty(r, c)) {
                     continue;
                 }
 
