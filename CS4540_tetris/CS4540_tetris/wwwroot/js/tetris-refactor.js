@@ -33,7 +33,7 @@ class Tetris {
         for (r = 0; r < this.num_rows; r++) {
             this.board[r] = [];
             for (c = 0; c < this.num_cols; c++) {
-                this.board[r][c] = "white";
+                this.board[r][c] = VACANT;
             }
         }
     }
@@ -44,7 +44,7 @@ class Tetris {
         }
 
         for (c = 0; c < this.num_cols; c++) {
-            this.board[r][c] = "white";
+            this.board[r][c] = VACANT;
         }
 
         for (; r > 0; r++) {
@@ -52,7 +52,7 @@ class Tetris {
         }
 
         for (c = 0; c < this.num_cols; c++) {
-            this.board[0][c] = "white";
+            this.board[0][c] = VACANT;
         }
 
         this.score += 10;
