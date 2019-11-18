@@ -44,6 +44,7 @@ namespace CS4540_tetris.Data
             var stats = new PlayerStats[]
             {
             new PlayerStats{
+                //TODO SAVE GAMEUSER
                 HighestScore = 7000,
                 GamesPlayed = 1,
                 LastGameDate = DateTime.Today,
@@ -52,6 +53,7 @@ namespace CS4540_tetris.Data
                 UserName = "gameboi@tetrominoes.com",
             },
             new PlayerStats{
+                //TODO SAVE GAMEUSER
                 HighestScore = 2000,
                 GamesPlayed = 1,
                 LastGameDate = DateTime.Today,
@@ -60,6 +62,7 @@ namespace CS4540_tetris.Data
                 UserName = "gamegorl@tetrominoes.com",
             },
             new PlayerStats{
+                //TODO SAVE GAMEUSER
                 HighestScore = 25,
                 GamesPlayed = 1,
                 LastGameDate = DateTime.Today,
