@@ -18,11 +18,11 @@ namespace CS4540_tetris.Data
         /// <param name="scorecontext"></param>
         /// <param name="usercontext"></param>
         /// <param name="userManager"></param>
-        public static void Initialize(ScoreContext scorecontext, UserContext usercontext, UserManager<GameUser> userManager)
+        public static async Task InitializeAsync(ScoreContext scorecontext, UserContext usercontext, UserManager<GameUser> userManager)
         {
             scorecontext.Database.Migrate();
             usercontext.Database.Migrate();
-            SeedUsers(userManager);
+            await SeedUsersAsync(userManager);
             SeedScores(scorecontext);
         }
 
@@ -84,51 +84,44 @@ namespace CS4540_tetris.Data
         /// This is to create users if they do not yet exist
         /// </summary>
         /// <param name="userManager"></param>
-        public static void SeedUsers
-            (UserManager<GameUser> userManager)
+        public static async Task SeedUsersAsync(UserManager<GameUser> userManager)
         {
-            if (userManager.FindByEmailAsync
-                ("gameboi@tetrominoes.com").Result == null)
+            string password = "password";
+            if (await userManager.FindByEmailAsync("gameboi@tetrominoes.com") == null)
             {
-                GameUser user = new GameUser();
-                user.UserName = "gameboi@tetrominoes.com";
-                user.NickName = "Boi";
-                user.Email = "gameboi@tetrominoes.com";
-                user.EmailConfirmed = true;
+                GameUser user = new GameUser 
+                {
+                    UserName = "gameboi@tetrominoes.com",
+                    NickName = "Boi",
+                    Email = "gameboi@tetrominoes.com",
+                    EmailConfirmed = true
+                };
 
-                IdentityResult result = userManager.CreateAsync
-                (user, "123ABC!@#def").Result;
-
-                //NOT REALLY necessary since we only want one role player... we can just distinguish using logged in or nonlogged in user
-                //if (result.Succeeded)
-                //{
-                //    userManager.AddToRoleAsync(user,
-                //                        "Player").Wait();
-                //}
+                await userManager.CreateAsync(user, password);
             }
-            if (userManager.FindByEmailAsync
-                ("gamegorl@tetrominoes.com").Result == null)
+            if (await userManager.FindByEmailAsync("gamegorl@tetrominoes.com") == null)
             {
-                GameUser user = new GameUser();
-                user.UserName = "gamegorl@tetrominoes.com";
-                user.NickName = "Gorl";
-                user.Email = "gamegorl@tetrominoes.com";
-                user.EmailConfirmed = true;
+                GameUser user = new GameUser
+                {
+                    UserName = "gamegorl@tetrominoes.com",
+                    NickName = "Gorl",
+                    Email = "gamegorl@tetrominoes.com",
+                    EmailConfirmed = true
+                };
 
-                IdentityResult result = userManager.CreateAsync
-                (user, "123ABC!@#def").Result;
+                await userManager.CreateAsync(user, password);
             }
-            if (userManager.FindByEmailAsync
-                ("gamealien@tetrominoes.com").Result == null)
+            if (await userManager.FindByEmailAsync("gamealien@tetrominoes.com") == null)
             {
-                GameUser user = new GameUser();
-                user.UserName = "gamealien@tetrominoes.com";
-                user.Email = "gamealien@tetrominoes.com";
-                user.NickName = "Alien";
-                user.EmailConfirmed = true;
+                GameUser user = new GameUser
+                {
+                    UserName = "gamealien@tetrominoes.com",
+                    NickName = "Alien",
+                    Email = "gamealien@tetrominoes.com",
+                    EmailConfirmed = true
+                };
 
-                IdentityResult result = userManager.CreateAsync
-                (user, "123ABC!@#def").Result;
+                await userManager.CreateAsync(user, password);
             }
         }
     }
