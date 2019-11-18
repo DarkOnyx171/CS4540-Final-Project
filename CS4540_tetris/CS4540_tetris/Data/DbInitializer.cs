@@ -25,7 +25,57 @@ namespace CS4540_tetris.Data
             SeedUsers(userManager);
             SeedScores(gamedatacontext);
             SeedPlayerStats(gamedatacontext);
+            //TODO after courtney okays
+            //SeedNotes(gamedatacontext);
         }
+
+        /*
+        /// <summary>
+        /// this is to create player stat's notes if they do not exist
+        /// </summary>
+        /// <param name="scorecontext"></param>
+        /// <param name="usercontext"></param>
+        /// <param name="userManager"></param>
+        public static void SeedNotes(ScoreContext notescontext)
+        {
+            // Look for any stats
+            if (notescontext.StatNotes.Any())
+            {
+                return;   // DB has been seeded
+            }
+            //Initialize these scores
+            var notes = new StatNotes[]
+            {
+            new StatNotes{
+                //TODO SAVE GAMEUSER
+                note = "Congrats on your great score!",
+                Time_Modified = DateTime.Now,
+                liked = 2,
+                UserName = "gameboi@tetrominoes.com",
+            },
+            new StatNotes{
+                //TODO SAVE GAMEUSER
+                note = "Go back to space!",
+                Time_Modified = DateTime.Now,
+                liked = 100,
+                UserName = "gamealien@tetrominoes.com",
+            },
+            };
+            foreach (StatNotes n in notes)
+            {
+                notescontext.StatNotes.Add(n);
+            }
+
+            try
+            {
+                notescontext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }*/
 
         /// <summary>
         /// this is to create player stats if they do not exist
