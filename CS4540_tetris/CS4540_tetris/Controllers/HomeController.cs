@@ -41,12 +41,12 @@ namespace CS4540_tetris.Controllers
 
         public IActionResult Stats()
         {
-            return View();
+            return View(_scorecontext.PlayerStats.OrderBy(player => player.UserName).ToList());
         }
 
         ////accessible to everyone
         [AllowAnonymous]
-        public IActionResult Privacy()
+        public IActionResult Messages()
         {
             return View();
         }
