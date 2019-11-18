@@ -18,12 +18,70 @@ namespace CS4540_tetris.Data
         /// <param name="scorecontext"></param>
         /// <param name="usercontext"></param>
         /// <param name="userManager"></param>
-        public static void Initialize(ScoreContext scorecontext, UserContext usercontext, UserManager<GameUser> userManager)
+        public static void Initialize(ScoreContext gamedatacontext, UserContext usercontext, UserManager<GameUser> userManager)
         {
-            scorecontext.Database.Migrate();
+            gamedatacontext.Database.Migrate();
             usercontext.Database.Migrate();
             SeedUsers(userManager);
-            SeedScores(scorecontext);
+            SeedScores(gamedatacontext);
+            SeedPlayerStats(gamedatacontext);
+        }
+
+        /// <summary>
+        /// this is to create player stats if they do not exist
+        /// </summary>
+        /// <param name="scorecontext"></param>
+        /// <param name="usercontext"></param>
+        /// <param name="userManager"></param>
+        public static void SeedPlayerStats(ScoreContext statscontext)
+        {
+            // Look for any stats
+            if (statscontext.Scores.Any())
+            {
+                return;   // DB has been seeded
+            }
+            //Initialize these scores
+            var stats = new PlayerStats[]
+            {
+            new PlayerStats{
+                HighestScore = 7000,
+                GamesPlayed = 1,
+                LastGameDate = DateTime.Today,
+                TotalTimePlayed = TimeSpan.FromMinutes(12),
+                LongestGame = TimeSpan.FromMinutes(12),
+                UserName = "gameboi@tetrominoes.com",
+            },
+            new PlayerStats{
+                HighestScore = 2000,
+                GamesPlayed = 1,
+                LastGameDate = DateTime.Today,
+                TotalTimePlayed = TimeSpan.FromMinutes(4),
+                LongestGame = TimeSpan.FromMinutes(4),
+                UserName = "gamegorl@tetrominoes.com",
+            },
+            new PlayerStats{
+                HighestScore = 25,
+                GamesPlayed = 1,
+                LastGameDate = DateTime.Today,
+                TotalTimePlayed = TimeSpan.FromMinutes(4),
+                LongestGame = TimeSpan.FromMinutes(4),
+                UserName = "gamealien@tetrominoes.com",
+            },
+            };
+            foreach (PlayerStats s in stats)
+            {
+                statscontext.PlayerStats.Add(s);
+            }
+
+            try
+            {
+                statscontext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -46,22 +104,19 @@ namespace CS4540_tetris.Data
                 Value = 7000,
                 Nickname = "Boi",
                 UserName = "gameboi@tetrominoes.com",
-                //TODO how to initialize gamemode if enum?
                 GameMode = GameMode.Single_Player
             },
             new Score{
                 Value = 2000,
                 Nickname = "Gorl",
                 UserName = "gamegorl@tetrominoes.com",
-                //TODO how to initialize gamemode if enum?
-                //GameMode = 1;
+                GameMode = GameMode.Multi_Player
             },
             new Score{
                 Value = 25,
                 Nickname = "Alien",
                 UserName = "gamealien@tetrominoes.com",
-                //TODO how to initialize gamemode if enum?
-                //GameMode = 1;
+                GameMode = GameMode.Multi_Player
             },
             };
             foreach (Score s in scores)
