@@ -250,6 +250,7 @@ class Tetris {
         this.score = 0;
         this.piece = this.randomPiece();
         this.drawBoard();
+        this.gameOver = false;
     }
 
     drawSquare(x, y, color) {
@@ -300,6 +301,7 @@ class Tetris {
     }
 
     clearRow(r) {
+        debugger;
         if (r >= this.num_rows) {
             return;
         }
@@ -308,7 +310,7 @@ class Tetris {
             this.board[r][c] = VACANT;
         }
 
-        for (; r > 0; r++) {
+        for (; r > 0; r--) {
             this.board[r] = this.board[r - 1];
         }
 
@@ -317,6 +319,7 @@ class Tetris {
         }
 
         this.score += 10;
+        this.drawBoard();
     }
 
     randomPiece() {
@@ -376,7 +379,7 @@ class Tetris {
                 if (this.piece.getY() + r < 0) {
                     alert("Game Over");
                     // stop request animation frame
-                    gameOver = true;
+                    this.gameOver = true;
                     return;
                 }
                 // we lock the piece
@@ -418,13 +421,16 @@ class Tetris {
         this.drawPiece();
     }
 
+    isGameOver() {
+        return this.gameOver;
+    }
+
 }
 
 cvs = document.getElementById("game");
 tetris = new Tetris(20, 10, cvs);
 
 let dropStart = Date.now();
-let gameOver = false;
 
 function gameLoop() {
     let now = Date.now();
@@ -433,7 +439,7 @@ function gameLoop() {
         tetris.movePiece(0, 1);
         dropStart = Date.now();
     }
-    if (!gameOver) {
+    if (!tetris.isGameOver()) {
         requestAnimationFrame(gameLoop);
     }
 }
