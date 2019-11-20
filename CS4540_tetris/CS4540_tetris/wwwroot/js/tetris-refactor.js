@@ -137,21 +137,21 @@ class Tetris {
     }
 
     rotate() {
-        let nextPattern = this.tetromino[(this.tetrominoN + 1) % this.tetromino.length];
+        this.piece.nextPattern();
         let kick = 0;
 
-        if (this.collision(0, 0, nextPattern)) {
-            if (this.x > COL / 2) {
+        if (this.collision(0, 0)) {
+            if (this.piece.getX() > this.num_cols / 2) {
                 kick = -1; // we need to move the piece to the left
             } else {
                 kick = 1; // we need to move the piece to the right
             }
         }
 
-        if (!this.collision(kick, 0, nextPattern)) {
-            this.x += kick;
-            this.tetrominoN = (this.tetrominoN + 1) % this.tetromino.length; // (0+1)%4 => 1
-            this.activeTetromino = this.tetromino[this.tetrominoN];
+        if (!this.collision(kick, 0)) {
+            this.piece.updateX(kick);
+        } else {
+            prevPattern();
         }
     }
 
