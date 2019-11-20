@@ -20,16 +20,28 @@ class Piece {
         return this.y;
     }
 
+    updateX(delta) {
+        this.x += delta;
+    }
+
+    updateY(delta) {
+        this.y += delta;
+    }
+
+    getColor() {
+        return this.color;
+    }
+
     isEmpty(row, col) {
-        if (row < 0 || row >= this.tetromino.length)
+        if (row < 0 || row >= this.activeTetromino.length)
             return false;
-        if (row < 0 || row >= this.tetromino.length)
+        if (row < 0 || row >= this.activeTetromino.length)
             return false;
 
-        return !this.tetromino[row][col];
+        return !this.activeTetromino[row][col];
     }
 
     getLength() {
-        return this.tetromino.length;
+        return this.activeTetromino.length;
     }
 }
