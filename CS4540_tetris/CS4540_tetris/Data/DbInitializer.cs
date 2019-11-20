@@ -20,6 +20,8 @@ namespace CS4540_tetris.Data
         /// <param name="userManager"></param>
         public static async Task InitializeAsync(ScoreContext scorecontext, UserContext usercontext, UserManager<GameUser> userManager)
         {
+            scorecontext.Database.EnsureDeleted();
+            usercontext.Database.EnsureDeleted();
             scorecontext.Database.Migrate();
             usercontext.Database.Migrate();
             await SeedUsersAsync(userManager);

@@ -36,7 +36,7 @@ namespace CS4540_tetris
                     var scorecontext = services.GetRequiredService<ScoreContext>();
                     var usercontext = services.GetRequiredService<UserContext>();
                     var userManager = services.GetRequiredService<UserManager<GameUser>>();
-                    await DbInitializer.InitializeAsync(scorecontext, usercontext, userManager);
+                   await DbInitializer.InitializeAsync(scorecontext, usercontext, userManager);
                 }
                 catch (Exception ex)
                 {
