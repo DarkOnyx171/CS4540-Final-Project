@@ -13,7 +13,7 @@ using CS4540_tetris.Areas.Identity.Data;
 namespace CS4540_tetris.Controllers
 {
     //accessible to only logged in users unless overwritten for specific view
-    [Authorize]
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -33,12 +33,14 @@ namespace CS4540_tetris.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult Scores()
         {
             //sort the scores so we can display
             return View(_scorecontext.Scores.OrderBy(hs => hs.Value).ToList());
         }
 
+        [Authorize]
         public IActionResult Stats()
         {
             return View(_scorecontext.PlayerStats.OrderBy(player => player.UserName).ToList());
