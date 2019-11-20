@@ -43,13 +43,14 @@ namespace CS4540_tetris.Areas.Identity
                     options.User.RequireUniqueEmail = true;
                 });
 
-               
-
                 //Jaecee added email verification for players
-                services.AddDefaultIdentity<GameUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<UserContext>()
-                    .AddEntityFrameworkStores<UserContext>()
-                    .AddDefaultTokenProviders().AddDefaultUI();
+                services.AddDefaultIdentity<GameUser>(//config =>
+                //{
+                //    config.SignIn.RequireConfirmedEmail = true;
+                //}
+                )
+                    .AddEntityFrameworkStores<UserContext>();
+
                 services.AddTransient<IEmailSender, EmailSender>();
             });
         }

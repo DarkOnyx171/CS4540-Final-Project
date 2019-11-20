@@ -29,7 +29,7 @@ namespace CS4540_tetris
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddControllersWithViews();
+            services.AddMvc();
 
             services.AddDbContext<ScoreContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ScoreContext")));
@@ -53,6 +53,7 @@ namespace CS4540_tetris
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
