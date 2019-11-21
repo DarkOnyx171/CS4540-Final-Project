@@ -16,6 +16,8 @@ namespace CS4540_tetris
 {
     public class Program
     {
+        public static List<string> rooms = new List<string>();
+
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();

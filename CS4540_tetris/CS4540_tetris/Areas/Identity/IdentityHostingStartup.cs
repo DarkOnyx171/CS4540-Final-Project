@@ -1,7 +1,6 @@
 ﻿using System;
 using CS4540_tetris.Areas.Identity.Data;
 using CS4540_tetris.Models;
-using Learning_Outcome_Tracker.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;

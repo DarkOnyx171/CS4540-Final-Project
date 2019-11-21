@@ -53,6 +53,12 @@ namespace CS4540_tetris.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        public IActionResult Dual()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
