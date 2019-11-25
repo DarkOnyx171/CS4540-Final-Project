@@ -19,6 +19,7 @@ namespace CS4540_tetris.Controllers
         private readonly ILogger<HomeController> _logger;
         //TO establish a DB for this controller
         private readonly ScoreContext _scorecontext;
+        private readonly UserContext _usercontext;
 
         public HomeController(ILogger<HomeController> logger, ScoreContext scorecontext)
         {
@@ -53,10 +54,11 @@ namespace CS4540_tetris.Controllers
             return View();
         }
 
-        [AllowAnonymous]
+        [Authorize]
         public IActionResult Dual()
         {
-            return View();
+            ViewData["username"] = User.Identity.Name;
+            return View(ViewData);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
