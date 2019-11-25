@@ -13,12 +13,13 @@ using CS4540_tetris.Areas.Identity.Data;
 namespace CS4540_tetris.Controllers
 {
     //accessible to only logged in users unless overwritten for specific view
-    [Authorize]
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         //TO establish a DB for this controller
         private readonly ScoreContext _scorecontext;
+        private readonly UserContext _usercontext;
 
         public HomeController(ILogger<HomeController> logger, ScoreContext scorecontext)
         {
@@ -33,12 +34,14 @@ namespace CS4540_tetris.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult Scores()
         {
             //sort the scores so we can display
             return View(_scorecontext.Scores.OrderBy(hs => hs.Value).ToList());
         }
 
+        [Authorize]
         public IActionResult Stats()
         {
             return View(_scorecontext.PlayerStats.OrderBy(player => player.UserName).ToList());
@@ -49,6 +52,13 @@ namespace CS4540_tetris.Controllers
         public IActionResult Messages()
         {
             return View();
+        }
+
+        [Authorize]
+        public IActionResult Dual()
+        {
+            ViewData["username"] = User.Identity.Name;
+            return View(ViewData);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

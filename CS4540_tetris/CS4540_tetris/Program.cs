@@ -16,16 +16,18 @@ namespace CS4540_tetris
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static List<string> rooms = new List<string>();
+
+        public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
 
-            CreateDbIfNotExists(host);
+            await CreateDbIfNotExistsAsync(host);
 
             host.Run();
         }
 
-        private static void CreateDbIfNotExists(IHost host)
+        private static async Task CreateDbIfNotExistsAsync(IHost host)
         {
             using (var scope = host.Services.CreateScope())
             {
@@ -36,7 +38,7 @@ namespace CS4540_tetris
                     var scorecontext = services.GetRequiredService<ScoreContext>();
                     var usercontext = services.GetRequiredService<UserContext>();
                     var userManager = services.GetRequiredService<UserManager<GameUser>>();
-                    DbInitializer.Initialize(scorecontext, usercontext, userManager);
+                   await DbInitializer.InitializeAsync(scorecontext, usercontext, userManager);
                 }
                 catch (Exception ex)
                 {
