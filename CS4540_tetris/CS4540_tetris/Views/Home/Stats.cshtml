@@ -116,9 +116,9 @@
                         @{
                             //int user = (int)item.GameUser;
                         }
-                        <form onsubmit="submit_LONoteProf(event,@note_id,@loID)" aspaction="ChangeLONoteProf" method="POST">
+                        <form onsubmit="submit_PlayerStatsNote(event)" aspaction="ChangeLONoteProf" method="POST">
                             <textarea id="note" name="note" rows="2" cols="50">
-                                        @note
+                                        I know at note needs to go here and two things in the first one
                                     </textarea>
                             <br />
                             <input type="submit">
@@ -126,6 +126,7 @@
                     </td>
                     <td>
                         @{
+
                             //beginning implementation of how to display last time modified for lo note
                             //var lastUpdatedNote = "";
                             //if (item.Note != null)
@@ -137,7 +138,7 @@
                             //    lastUpdatedNoge = "N/A";
                            // }
                         }
-                        Date Modified: @lastUpdatedLO
+                       
                     </td>
                 </tr>-->
             }
