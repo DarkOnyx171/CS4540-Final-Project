@@ -18,7 +18,7 @@ namespace CS4540_tetris.Data
         /// <param name="scorecontext"></param>
         /// <param name="usercontext"></param>
         /// <param name="userManager"></param>
-        public static async Task Initialize(ScoreContext gamedatacontext, UserContext usercontext, UserManager<GameUser> userManager)
+        public static async Task InitializeAsync(ScoreContext gamedatacontext, UserContext usercontext, UserManager<GameUser> userManager)
         {
             gamedatacontext.Database.EnsureDeleted();
             usercontext.Database.EnsureDeleted();
@@ -27,11 +27,10 @@ namespace CS4540_tetris.Data
             await SeedUsers(userManager);
             SeedScores(gamedatacontext);
             SeedPlayerStats(gamedatacontext);
-            //TODO after courtney okays
-            //SeedNotes(gamedatacontext);
+            SeedNotes(gamedatacontext);
         }
 
-        /*
+        
         /// <summary>
         /// this is to create player stat's notes if they do not exist
         /// </summary>
@@ -41,7 +40,7 @@ namespace CS4540_tetris.Data
         public static void SeedNotes(ScoreContext notescontext)
         {
             // Look for any stats
-            if (notescontext.StatNotes.Any())
+            if (notescontext.PlayerStatNotes.Any())
             {
                 return;   // DB has been seeded
             }
@@ -53,19 +52,19 @@ namespace CS4540_tetris.Data
                 note = "Congrats on your great score!",
                 Time_Modified = DateTime.Now,
                 liked = 2,
-                UserName = "gameboi@tetrominoes.com",
+                userName = "gameboi@tetrominoes.com",
             },
             new StatNotes{
                 //TODO SAVE GAMEUSER
                 note = "Go back to space!",
                 Time_Modified = DateTime.Now,
                 liked = 100,
-                UserName = "gamealien@tetrominoes.com",
+                userName = "gamealien@tetrominoes.com",
             },
             };
             foreach (StatNotes n in notes)
             {
-                notescontext.StatNotes.Add(n);
+                notescontext.PlayerStatNotes.Add(n);
             }
 
             try
@@ -77,7 +76,7 @@ namespace CS4540_tetris.Data
                 Debug.WriteLine(e.Message);
                 throw;
             }
-        }*/
+        }
 
         /// <summary>
         /// this is to create player stats if they do not exist

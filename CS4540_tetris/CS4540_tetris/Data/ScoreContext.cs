@@ -18,5 +18,6 @@ namespace CS4540_tetris.Data
         public DbSet<GameLog> GameLogs { get; set; }
         public DbSet<MultiPlayerLog> MultiPlayerLogs { get; set; }
         public DbSet<PlayerStats> PlayerStats { get; set; }
+        public DbSet<StatNotes> PlayerStatNotes { get; set; }
     }
 }
