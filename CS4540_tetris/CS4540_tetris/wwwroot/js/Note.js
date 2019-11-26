@@ -15,7 +15,7 @@ $(function () {
 
 //meant to submit a player stat
 function submit_PlayerStatsNote(e, note_id, statID) {
-    console.log("in submit_LONoteProf function");
+    console.log("in submit_playerStatsNote function");
     console.log(e);
     e.preventDefault();
 

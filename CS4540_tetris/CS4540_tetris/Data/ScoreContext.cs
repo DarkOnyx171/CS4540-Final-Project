@@ -9,6 +9,10 @@ namespace CS4540_tetris.Data
 {
     public class ScoreContext : DbContext
     {
+        public ScoreContext()
+        {
+        }
+
         public ScoreContext(DbContextOptions<ScoreContext> options)
             : base(options)
         {
@@ -18,6 +22,6 @@ namespace CS4540_tetris.Data
         public DbSet<GameLog> GameLogs { get; set; }
         public DbSet<MultiPlayerLog> MultiPlayerLogs { get; set; }
         public DbSet<PlayerStats> PlayerStats { get; set; }
-        public DbSet<StatNotes> PlayerStatNotes { get; set; }
+        public DbSet<StatNotes> StatNotes { get; set; }
     }
 }

@@ -42,14 +42,16 @@ namespace CS4540_tetris.Controllers
             return View(_scorecontext.Scores.OrderBy(hs => hs.Value).ToList());
         }
 
-        [Authorize]
+        //[Authorize]
+        [AllowAnonymous]
         public IActionResult Stats()
         {
-
-            var stats = _scorecontext.PlayerStats.OrderBy(player => player.UserName).Include(c => c.Note)
+            //using (var context = new ScoreContext())
+            //{
+                var stats = _scorecontext.PlayerStats.OrderBy(player => player.UserName).Include(c => c.Note)
                     .AsNoTracking();
-            return View(stats.ToList());
-            
+                return View(stats.ToList());
+            //}
             //return View(_scorecontext.PlayerStats.OrderBy(player => player.UserName).ToList());
         }
 
@@ -79,7 +81,7 @@ namespace CS4540_tetris.Controllers
         public JsonResult ChangeStatNote(string passednote, int note_id, int statID)
         {
             //if(_context.LO_Notes.Find(note_id) != null)
-            var note_from_db = _scorecontext.PlayerStatNotes.Find(note_id);
+            var note_from_db = _scorecontext.StatNotes.Find(note_id);
             //no note exists
             if (note_from_db == null)
             {
@@ -89,12 +91,12 @@ namespace CS4540_tetris.Controllers
                     StatID = statID, //what should this be TODO
                     Time_Modified = DateTime.Now,
                 };
-                _scorecontext.PlayerStatNotes.Add(note_from_db);
+                _scorecontext.StatNotes.Add(note_from_db);
             }
             //deleting a note
             else if (passednote == null && note_from_db != null)
             {
-                _scorecontext.PlayerStatNotes.Remove(note_from_db);
+                _scorecontext.StatNotes.Remove(note_from_db);
             }
             //updating a note
             else

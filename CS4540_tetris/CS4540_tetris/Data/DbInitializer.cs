@@ -40,7 +40,7 @@ namespace CS4540_tetris.Data
         public static void SeedNotes(ScoreContext notescontext)
         {
             // Look for any stats
-            if (notescontext.PlayerStatNotes.Any())
+            if (notescontext.StatNotes.Any())
             {
                 return;   // DB has been seeded
             }
@@ -76,7 +76,7 @@ namespace CS4540_tetris.Data
             };
             foreach (StatNotes n in notes)
             {
-                notescontext.PlayerStatNotes.Add(n);
+                notescontext.StatNotes.Add(n);
             }
 
             try
