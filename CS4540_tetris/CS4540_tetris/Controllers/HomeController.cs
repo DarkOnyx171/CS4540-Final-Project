@@ -9,6 +9,7 @@ using CS4540_tetris.Models;
 using Microsoft.AspNetCore.Authorization;
 using CS4540_tetris.Data;
 using CS4540_tetris.Areas.Identity.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace CS4540_tetris.Controllers
 {
@@ -44,7 +45,12 @@ namespace CS4540_tetris.Controllers
         [Authorize]
         public IActionResult Stats()
         {
-            return View(_scorecontext.PlayerStats.OrderBy(player => player.UserName).ToList());
+
+            var stats = _scorecontext.PlayerStats.OrderBy(player => player.UserName).Include(c => c.Note)
+                    .AsNoTracking();
+            return View(stats.ToList());
+            
+            //return View(_scorecontext.PlayerStats.OrderBy(player => player.UserName).ToList());
         }
 
         ////accessible to everyone
@@ -59,6 +65,51 @@ namespace CS4540_tetris.Controllers
         {
             ViewData["username"] = User.Identity.Name;
             return View(ViewData);
+        }
+
+        /// <summary>
+        /// Designed to change the database when an LONOTE is submitted on the professors end
+        /// </summary>
+        /// <param name="passednote">the note info</param>
+        /// <param name="note_id">the note id</param>
+        /// <param name="statID">the learning objective it is tied to</param>
+        /// <returns>JSON success</returns>
+        [HttpPost]
+        public JsonResult ChangeStatNote(string passednote, int note_id, int statID)
+        {
+            //if(_context.LO_Notes.Find(note_id) != null)
+            var note_from_db = _scorecontext.PlayerStatNotes.Find(note_id);
+            //no note exists
+            if (note_from_db == null)
+            {
+                note_from_db = new StatNotes
+                {
+                    note = passednote,
+                    StatID = statID, //what should this be TODO
+                    Time_Modified = DateTime.Now,
+                };
+                _scorecontext.PlayerStatNotes.Add(note_from_db);
+            }
+            //deleting a note
+            else if (passednote == null && note_from_db != null)
+            {
+                _scorecontext.PlayerStatNotes.Remove(note_from_db);
+            }
+            //updating a note
+            else
+            {
+                note_from_db.note = passednote;
+                note_from_db.Time_Modified = DateTime.Now;
+            }
+            _scorecontext.SaveChanges();
+
+            return Json(new
+            {
+                success = true,
+                note = passednote,
+                id = note_from_db.StatID,
+                statID = statID
+            });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

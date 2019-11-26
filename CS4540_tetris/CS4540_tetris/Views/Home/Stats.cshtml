@@ -18,6 +18,11 @@
 @{
     ViewData["Title"] = "Player Stats";
 }
+
+@section Scripts
+        {
+    <script src="~/js/Note.js"></script>
+}
 <!DOCTYPE html>
 
 
@@ -97,28 +102,28 @@
                         @Html.DisplayFor(modelItem => item.GamesPlayed)
                     </td>
                 </tr>
-                <!--
+
                 <tr style="border:3px solid gray">
                     <td>
-                        LO Comment:
+                        Stat Comment:
                     </td>
                     <td>
                         @{
-                            //getting all the stuff ready to do stuff with the LONote table
-                            //note_id = -1;
-                            //note = "";
-                            //if (item.Note != null)
-                            //{
-                            //    note_id = item.Note.UserName; //or userid with the user seeded
-                            //    note = item.Note.Note;
-                            //}
+                            //getting all the stuff ready to do stuff with the PlayerStatNotes table
+                            var note_id = -1;
+                            var note = "";
+                            if (item.Note != null)
+                            {
+                                note_id = item.Note.noteID; //or userid with the user seeded
+                                note = item.Note.note;
+                            }
                         }
                         @{
-                            //int user = (int)item.GameUser;
+                            int statID = (int)item.PlayerStatsID;
                         }
-                        <form onsubmit="submit_PlayerStatsNote(event)" aspaction="ChangeLONoteProf" method="POST">
+                        <form onsubmit="submit_PlayerStatsNote(event,@note_id,@statID)" aspaction="ChangeStatNote" method="POST">
                             <textarea id="note" name="note" rows="2" cols="50">
-                                        I know at note needs to go here and two things in the first one
+                                        @note
                                     </textarea>
                             <br />
                             <input type="submit">
@@ -128,19 +133,19 @@
                         @{
 
                             //beginning implementation of how to display last time modified for lo note
-                            //var lastUpdatedNote = "";
-                            //if (item.Note != null)
-                            //{
-                            //    lastUpdatedLO += item.Note.Time_Modified.ToString();
-                           // }
-                            //else
-                            //{
-                            //    lastUpdatedNoge = "N/A";
-                           // }
+                            var lastUpdatedNote = "";
+                            if (item.Note != null)
+                            {
+                                lastUpdatedNote += item.Note.Time_Modified.ToString();
+                            }
+                            else
+                            {
+                                lastUpdatedNote = "N/A";
+                            }
                         }
-                       
+
                     </td>
-                </tr>-->
+                </tr>
             }
         </tbody>
     </table>

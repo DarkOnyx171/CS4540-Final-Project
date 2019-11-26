@@ -18,5 +18,6 @@ namespace CS4540_tetris.Models
         public TimeSpan LongestGame { get; set; }
         public int HighestScore { get; set; }
         public int GamesPlayed { get; set; }
+        public StatNotes Note { get; set; }
     }
 }

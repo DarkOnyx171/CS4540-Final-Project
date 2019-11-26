@@ -48,14 +48,26 @@ namespace CS4540_tetris.Data
             var notes = new StatNotes[]
             {
             new StatNotes{
-                //TODO SAVE GAMEUSER
+                gameUser = new GameUser
+                {
+                    UserName = "gamegorl@tetrominoes.com",
+                    NickName = "Gorl",
+                    Email = "gamegorl@tetrominoes.com",
+                    EmailConfirmed = true
+                },
                 note = "Congrats on your great score!",
                 Time_Modified = DateTime.Now,
                 liked = 2,
                 userName = "gameboi@tetrominoes.com",
             },
             new StatNotes{
-                //TODO SAVE GAMEUSER
+                gameUser = new GameUser
+                {
+                    UserName = "gameboi@tetrominoes.com",
+                    NickName = "Boi",
+                    Email = "gameboi@tetrominoes.com",
+                    EmailConfirmed = true
+                },
                 note = "Go back to space!",
                 Time_Modified = DateTime.Now,
                 liked = 100,
@@ -95,7 +107,13 @@ namespace CS4540_tetris.Data
             var stats = new PlayerStats[]
             {
             new PlayerStats{
-                //TODO SAVE GAMEUSER
+                User = new GameUser
+                {
+                    UserName = "gameboi@tetrominoes.com",
+                    NickName = "Boi",
+                    Email = "gameboi@tetrominoes.com",
+                    EmailConfirmed = true
+                },
                 HighestScore = 7000,
                 GamesPlayed = 1,
                 LastGameDate = DateTime.Today,
@@ -104,7 +122,13 @@ namespace CS4540_tetris.Data
                 UserName = "gameboi@tetrominoes.com",
             },
             new PlayerStats{
-                //TODO SAVE GAMEUSER
+                User = new GameUser
+                {
+                    UserName = "gamegorl@tetrominoes.com",
+                    NickName = "Gorl",
+                    Email = "gamegorl@tetrominoes.com",
+                    EmailConfirmed = true
+                },
                 HighestScore = 2000,
                 GamesPlayed = 1,
                 LastGameDate = DateTime.Today,
@@ -113,7 +137,13 @@ namespace CS4540_tetris.Data
                 UserName = "gamegorl@tetrominoes.com",
             },
             new PlayerStats{
-                //TODO SAVE GAMEUSER
+                User = new GameUser
+                {
+                    UserName = "gamealien@tetrominoes.com",
+                    NickName = "Alien",
+                    Email = "gamealien@tetrominoes.com",
+                    EmailConfirmed = true
+                },
                 HighestScore = 25,
                 GamesPlayed = 1,
                 LastGameDate = DateTime.Today,

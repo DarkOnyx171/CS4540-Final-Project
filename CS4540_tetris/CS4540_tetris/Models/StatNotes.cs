@@ -17,5 +17,7 @@ namespace CS4540_tetris.Models
         public int liked { get; set; } //maybe have a button for people to like buttons TODO
         [ScaffoldColumn(false)]
         public DateTime Time_Modified { get; set; }
+        public PlayerStats stat { get; set; }
+        public int StatID { get; set; }
     }
 }
