@@ -60,7 +60,8 @@ namespace CS4540_tetris.Controllers
             return View();
         }
 
-        [Authorize]
+        //[Authorize]
+        [AllowAnonymous]
         public IActionResult Dual()
         {
             ViewData["username"] = User.Identity.Name;
@@ -68,7 +69,7 @@ namespace CS4540_tetris.Controllers
         }
 
         /// <summary>
-        /// Designed to change the database when an LONOTE is submitted on the professors end
+        /// Designed to change the database when an stat note is submitted
         /// </summary>
         /// <param name="passednote">the note info</param>
         /// <param name="note_id">the note id</param>
