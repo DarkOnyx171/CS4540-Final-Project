@@ -1,6 +1,4 @@
-import "constants.js"
-
-class Piece {
+export class Piece {
     constructor(tetromino, color) {
         this.tetromino = tetromino;
         this.color = color;

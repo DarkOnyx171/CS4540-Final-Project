@@ -301,7 +301,6 @@ class Tetris {
     }
 
     clearRow(r) {
-        debugger;
         if (r >= this.num_rows) {
             return;
         }
@@ -319,6 +318,23 @@ class Tetris {
         }
 
         this.score += 10;
+        this.drawBoard();
+    }
+
+    addBottomRow() {
+        var r = this.num_rows - 1;
+        var empty = Math.floor(Math.random() * Math.floor(this.num_cols));
+
+        for (var row = 0; row < this.num_rows; row++) {
+            this.board[row] = this.board[row + 1];
+        }
+
+        this.board[r] = [];
+        for (var c = 0; c < this.num_cols; c++) {
+            this.board[r][c] = "grey";
+        }
+
+        this.board[r][empty] = VACANT;
         this.drawBoard();
     }
 

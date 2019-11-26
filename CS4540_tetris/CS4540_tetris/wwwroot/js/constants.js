@@ -1,5 +1,5 @@
-const SQ = 20;
-const EMPTY = "white";
+export const SQ = 20;
+export const VACANT = "white";
 
 const I = [
     [
@@ -152,7 +152,7 @@ const Z = [
     ]
 ];
 
-const PIECES = [
+export const PIECES = [
     [Z, "red"],
     [S, "green"],
     [T, "yellow"],
