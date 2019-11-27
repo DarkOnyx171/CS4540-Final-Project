@@ -177,6 +177,14 @@ class Piece {
         return this.tetromino[this.current];
     } 
 
+    getTetromino() {
+        return this.tetromino;
+    }
+
+    getCurrent() {
+        return this.current;
+    }
+
     getX() {
         return this.x;
     }
@@ -253,12 +261,12 @@ class Tetris {
         this.gameOver = false;
     }
 
-    drawSquare(x, y, color) {
+    drawSquare(x, y, color, offset = 0) {
         this.ctx.fillStyle = color;
-        this.ctx.fillRect(x * SQ, y * SQ, SQ, SQ);
+        this.ctx.fillRect(x * SQ + offset, y * SQ, SQ, SQ);
 
         this.ctx.strokeStyle = "Black";
-        this.ctx.strokeRect(x * SQ, y * SQ, SQ, SQ);
+        this.ctx.strokeRect(x * SQ + offset, y * SQ, SQ, SQ);
     }
 
     drawEmpty() {
@@ -393,7 +401,7 @@ class Tetris {
                 }
                 // pieces to lock on top = game over
                 if (this.piece.getY() + r < 0) {
-                    alert("Game Over");
+                    alert("Game Over!\n" + "Score: " + this.score);
                     // stop request animation frame
                     this.gameOver = true;
                     return;
@@ -441,6 +449,61 @@ class Tetris {
         return this.gameOver;
     }
 
+    getScore() {
+        return this.score;
+    }
+
+    getTetrisJson() {
+        var tetrisJson = {};
+
+        var boardJson = {};
+        boardJson["size"] = {height: this.num_rows, width: this.num_cols};
+        boardJson["board"] = this.board;
+
+        var pieceJson = {};
+        pieceJson["location"] = {x: this.piece.getX(), y: this.piece.getY()};
+        pieceJson["piece"] = this.piece.getPiece();
+        pieceJson["color"] = this.piece.getColor();
+
+        tetrisJson["board"] = boardJson;
+        tetrisJson["piece"] = pieceJson;
+        return JSON.stringify(tetrisJson);
+    }
+
+    drawExternalBoard(tetrisJsonString, offset) {
+        var tetrisObj = JSON.parse(tetrisJsonString);
+        let height = tetrisObj["board"]["size"]["height"];
+        let width = tetrisObj["board"]["size"]["width"];
+        let board = tetrisObj["board"]["board"];
+
+        let x = tetrisObj["piece"]["location"]["x"];
+        let y = tetrisObj["piece"]["location"]["y"];
+        let piece = tetrisObj["piece"]["piece"];
+        let color = tetrisObj["piece"]["color"];
+
+        // Clear board
+        for (var r = 0; r < height; r++) {
+            for (var c = 0; c < width; c++) {
+                this.drawSquare(c, r, VACANT, offset);
+            }
+        }
+
+        // Draw board
+        for (var r = 0; r < height; r++) {
+            for (var c = 0; c < width; c++) {
+                this.drawSquare(c, r, board[r][c], offset);
+            }
+        }
+
+        // Draw piece
+        for (var r = 0; r < piece.length; r++) {
+            for (var c = 0; c < piece.length; c++) {
+                if (piece[r][c]) {
+                    this.drawSquare(c + x, r + y, color, offset);
+                }
+            }
+        }
+    }
 }
 
 cvs = document.getElementById("game");
