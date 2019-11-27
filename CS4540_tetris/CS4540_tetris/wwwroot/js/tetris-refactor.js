@@ -526,6 +526,7 @@ function gameLoop() {
 document.addEventListener("keydown", control);
 
 function control(event) {
+    event.preventDefault();
     if (event.keyCode == 37) {
         tetris.movePiece(-1, 0);
     } else if (event.keyCode == 38) {
