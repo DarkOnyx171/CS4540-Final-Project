@@ -514,12 +514,16 @@ let dropStart = Date.now();
 function gameLoop() {
     let now = Date.now();
     let delta = now - dropStart;
+    tetris.drawExternalBoard(tetris.getTetrisJson(), 300);
     if (delta > 1000) {
         tetris.movePiece(0, 1);
         dropStart = Date.now();
     }
     if (!tetris.isGameOver()) {
         requestAnimationFrame(gameLoop);
+    } else {
+        tetris = new Tetris(20, 10, cvs);
+        tetris.drawExternalBoard(tetris.getTetrisJson(), 300);
     }
 }
 
