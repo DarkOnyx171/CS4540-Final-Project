@@ -508,20 +508,47 @@ class Tetris {
 
 cvs = document.getElementById("game");
 tetris = new Tetris(20, 10, cvs);
-
+players = 1;
+activegame = false;
 let dropStart = Date.now();
+
+function twoplayergame() {
+    cvs.width = 500;
+    players = 2;
+    start.style.display = "hidden";
+    activegame = true;
+    gameLoop();
+}
+
+function oneplayergame() {
+    cvs.width = 200;
+    players = 1;
+    start.style.display = "hidden";
+    activegame = true;
+    gameLoop();
+}
+
+function resetgame() {
+    start.style.display = "visible";
+    activegame = false;
+    tetris = new Tetris(20, 10, cvs);
+}
 
 function gameLoop() {
     let now = Date.now();
     let delta = now - dropStart;
-    tetris.drawExternalBoard(tetris.getTetrisJson(), 300);
+    if (players == 2) {
+        tetris.drawExternalBoard(tetris.getTetrisJson(), 300);
+    }
     if (delta > 1000) {
         tetris.movePiece(0, 1);
         dropStart = Date.now();
     }
     if (!tetris.isGameOver()) {
         requestAnimationFrame(gameLoop);
-    } else {
+    }
+    else {
+        resetgame();
         tetris = new Tetris(20, 10, cvs);
         tetris.drawExternalBoard(tetris.getTetrisJson(), 300);
     }
@@ -531,13 +558,15 @@ document.addEventListener("keydown", control);
 
 function control(event) {
     event.preventDefault();
-    if (event.keyCode == 37) {
-        tetris.movePiece(-1, 0);
-    } else if (event.keyCode == 38) {
-        tetris.rotate();
-    } else if (event.keyCode == 39) {
-        tetris.movePiece(1, 0);
-    } else if (event.keyCode == 40) {
-        tetris.movePiece(0, 1);
+    if (activegame == true) {
+        if (event.keyCode == 37) {
+            tetris.movePiece(-1, 0);
+        } else if (event.keyCode == 38) {
+            tetris.rotate();
+        } else if (event.keyCode == 39) {
+            tetris.movePiece(1, 0);
+        } else if (event.keyCode == 40) {
+            tetris.movePiece(0, 1);
+        }
     }
 }

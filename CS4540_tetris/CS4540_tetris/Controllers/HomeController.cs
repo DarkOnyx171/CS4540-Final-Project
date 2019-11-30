@@ -42,8 +42,7 @@ namespace CS4540_tetris.Controllers
             return View(_scorecontext.Scores.OrderBy(hs => hs.Value).ToList());
         }
 
-        //[Authorize]
-        [AllowAnonymous]
+        [Authorize]
         public IActionResult Stats()
         {
             //using (var context = new ScoreContext())
@@ -62,8 +61,7 @@ namespace CS4540_tetris.Controllers
             return View();
         }
 
-        //[Authorize]
-        [AllowAnonymous]
+        [Authorize]
         public IActionResult Dual()
         {
             ViewData["username"] = User.Identity.Name;
