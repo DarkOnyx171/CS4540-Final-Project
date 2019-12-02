@@ -39,7 +39,7 @@ namespace CS4540_tetris.Controllers
         public IActionResult Scores()
         {
             //sort the scores so we can display
-            return View(_scorecontext.Scores.OrderBy(hs => hs.Value).ToList());
+            return View(_scorecontext.Scores.OrderByDescending(hs => hs.Value).ToList());
         }
 
         [Authorize]
