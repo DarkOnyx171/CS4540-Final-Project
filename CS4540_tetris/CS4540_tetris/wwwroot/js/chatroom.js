@@ -1,6 +1,6 @@
 ﻿"use strict";
 
-var connection = new signalR.HubConnectionBuilder().withUrl("/chatroomHub").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("/Multi_Player").build();
 connection.start().then(function () {
     connection.invoke("GetOpenRooms").catch(function (err) {
         return console.error(err.toString());
@@ -34,7 +34,7 @@ document.getElementById("JoinButton").addEventListener("click", function (event)
 
 connection.on("SendRooms", function (rooms) {
     var roomselect = document.getElementById("RoomID");
-    var roomlist = rooms.split(" ");
+    var roomlist = rooms.split("\n");
     roomlist.forEach(function (room) {
         var option = document.createElement("option");
         option.text = room;
@@ -58,6 +58,7 @@ connection.on("JoinedRoom", function (user) {
     var li = document.createElement("li");
     li.textContent = encodedMsg;
     document.getElementById("messagesList").appendChild(li);
+    twoplayergame();
 });
 
 connection.on("ReceiveMessage", function (user, message) {
@@ -76,4 +77,34 @@ document.getElementById("sendButton").addEventListener("click", function (event)
         return console.error(err.toString());
     });
     event.preventDefault();
+});
+
+
+function InitTwoPlayerGame(event) {
+    connection.invoke("StartGame", roomid)
+        .catch(function (err) {
+            return console.error(err.toString());
+        });
+}
+
+function NewGameRoom(event) {
+    var room = document.getElementById("roomInput").value;
+    roomid = room;
+    connection.invoke("CreateRoom", room).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    InitTwoPlayerGame();
+}
+
+function SendGameState() {
+    json = tetris.getTetrisJson();
+    connection.invoke("SendMessage", user, json, roomid)
+        .catch(function (err) {
+            return console.error(err.toString());
+        });
+}
+
+connection.on("ReceiveGame", function (json) {
+    console.log(json);
 });

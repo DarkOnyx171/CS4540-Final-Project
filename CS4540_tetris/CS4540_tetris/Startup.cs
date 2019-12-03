@@ -63,7 +63,7 @@ namespace CS4540_tetris
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapHub<GameHub>("/chatHub");
-                endpoints.MapHub<ChatRoomHub>("/chatroomHub");
+                endpoints.MapHub<ChatRoomHub>("/Multi_Player");
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });

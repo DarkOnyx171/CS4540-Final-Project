@@ -16,7 +16,7 @@ namespace CS4540_tetris.Hubs
         public async Task CreateRoom(string name)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, name);
-            Program.rooms.Add(name);
+            Program.rooms.Add(name, 1);
 
             await Clients.Caller.SendAsync("StartRoom", name);
         }
@@ -25,6 +25,8 @@ namespace CS4540_tetris.Hubs
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, group);
 
+            Program.rooms[group]++;
+
             await Clients.Group(group).SendAsync("JoinedRoom", user);
         }
 
@@ -32,12 +34,22 @@ namespace CS4540_tetris.Hubs
         {
             string result = "";
 
-            foreach(string s in Program.rooms)
+            foreach(string g in Program.rooms.Keys)
             {
-                result += " " + s;
+                result += g + "\n";
             }
 
             await Clients.Caller.SendAsync("SendRooms", result);
+        }
+
+        public async Task StartGame(string group)
+        {
+            await Clients.Group(group).SendAsync("StartTwoPlayerGame");
+        }
+
+        public async Task SendGame(string group, string json)
+        {
+            await Clients.Group(group).SendAsync("ReceiveMessage", json);
         }
     }
 }

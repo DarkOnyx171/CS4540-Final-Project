@@ -539,6 +539,7 @@ function gameLoop() {
     let delta = now - dropStart;
     if (players == 2) {
         tetris.drawExternalBoard(tetris.getTetrisJson(), 300);
+        SendGameState();
     }
     if (delta > 1000) {
         tetris.movePiece(0, 1);
@@ -557,7 +558,7 @@ function gameLoop() {
 document.addEventListener("keydown", control);
 
 function control(event) {
-    event.preventDefault();
+    //event.preventDefault();
     if (activegame == true) {
         if (event.keyCode == 37) {
             tetris.movePiece(-1, 0);
@@ -570,3 +571,6 @@ function control(event) {
         }
     }
 }
+
+//smthn to request open rooms in the lobby, or create a new one.
+
