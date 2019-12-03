@@ -47,7 +47,7 @@ namespace CS4540_tetris.Controllers
         {
             //using (var context = new ScoreContext())
             //{
-                var stats = _scorecontext.PlayerStats.OrderBy(player => player.UserName).Include(c => c.Note)
+                var stats = _scorecontext.PlayerStats.OrderBy(player => player.UserName).Include(c => c.Note).ThenInclude(c => c.gameUser)
                     .AsNoTracking();
                 return View(stats.ToList());
             //}

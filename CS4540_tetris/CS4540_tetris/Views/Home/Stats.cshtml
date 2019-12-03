@@ -133,17 +133,37 @@
                         @{
 
                             //beginning implementation of how to display last time modified for lo note
-                            var lastUpdatedNote = "";
+                            var lastUpdatedNote = " Note Last Modified: ";
                             if (item.Note != null)
                             {
                                 lastUpdatedNote += item.Note.Time_Modified.ToString();
                             }
                             else
                             {
-                                lastUpdatedNote = "N/A";
+                                lastUpdatedNote += "N/A";
                             }
                         }
+                        @lastUpdatedNote
+                    </td>
+                    <td>
+                        @{
 
+                            //beginning implementation of how to display last time modified for lo note
+                            var lastUserUpdatedNote = "Note by User: ";
+                            if (item.Note != null)
+                            {
+                                lastUserUpdatedNote += item.Note.gameUser.UserName.ToString();
+                            }
+                            else
+                            {
+                                lastUserUpdatedNote += "N/A";
+                            }
+                        }
+                        @lastUserUpdatedNote
+                    </td>
+                    <td>
+                    </td>
+                    <td>
                     </td>
                 </tr>
             }

@@ -26,7 +26,7 @@ namespace CS4540_tetris.Data
             usercontext.Database.Migrate();
             await SeedUsers(userManager);
             SeedScores(gamedatacontext);
-            SeedPlayerStats(gamedatacontext);
+            await SeedPlayerStats(gamedatacontext);
             SeedNotes(gamedatacontext);
         }
 
@@ -44,6 +44,8 @@ namespace CS4540_tetris.Data
             {
                 return;   // DB has been seeded
             }
+            PlayerStats firststat = notescontext.PlayerStats.Where(s => s.UserName == "gameboi@tetrominoes.com").ToList()[0];
+            PlayerStats secondstat = notescontext.PlayerStats.Where(s => s.UserName == "gamealien@tetrominoes.com").ToList()[0];
             //Initialize these scores
             var notes = new StatNotes[]
             {
@@ -59,6 +61,7 @@ namespace CS4540_tetris.Data
                 Time_Modified = DateTime.Now,
                 liked = 2,
                 userName = "gameboi@tetrominoes.com",
+                StatID = firststat.PlayerStatsID,
             },
             new StatNotes{
                 gameUser = new GameUser
@@ -72,6 +75,7 @@ namespace CS4540_tetris.Data
                 Time_Modified = DateTime.Now,
                 liked = 100,
                 userName = "gamealien@tetrominoes.com",
+                StatID = secondstat.PlayerStatsID,
             },
             };
             foreach (StatNotes n in notes)
@@ -96,10 +100,10 @@ namespace CS4540_tetris.Data
         /// <param name="scorecontext"></param>
         /// <param name="usercontext"></param>
         /// <param name="userManager"></param>
-        public static void SeedPlayerStats(ScoreContext statscontext)
+        public static async Task SeedPlayerStats(ScoreContext statscontext)
         {
             // Look for any stats
-            if (statscontext.Scores.Any())
+            if (statscontext.PlayerStats.Any())
             {
                 return;   // DB has been seeded
             }
@@ -154,12 +158,12 @@ namespace CS4540_tetris.Data
             };
             foreach (PlayerStats s in stats)
             {
-                statscontext.PlayerStats.Add(s);
+                await statscontext.PlayerStats.AddAsync(s);
             }
 
             try
             {
-                statscontext.SaveChanges();
+                await statscontext.SaveChangesAsync();
             }
             catch (Exception e)
             {
