@@ -255,6 +255,7 @@ class Tetris {
         this.board = [];
         this.clearBoard();
 
+        this.scorestreak = 0;
         this.score = 0;
         this.piece = this.randomPiece();
         this.drawBoard();
@@ -325,7 +326,6 @@ class Tetris {
             this.board[0][c] = VACANT;
         }
 
-        this.score += 10;
         this.drawBoard();
     }
 
@@ -418,7 +418,14 @@ class Tetris {
                 isRowFull = isRowFull && (this.board[r][c] != VACANT);
             }
             if (isRowFull) {
-                this.clearRow(r)
+                this.clearRow(r);
+                this.score += 100;
+                document.getElementById("score").innerText = this.score;
+                this.scorestreak++;
+                if (this.scorestreak == 3) {
+                    SendRow();
+                    this.scorestreak = 0;
+                }
             }
         }
         // update the board
@@ -553,7 +560,12 @@ function gameLoop() {
         }
         else {
             //game is over
-            SendGameover();
+            if (players == 2) {
+                SendGameover();
+            }
+            else {
+                resetgame();
+            }
         }
     }
 }

@@ -52,6 +52,11 @@ namespace CS4540_tetris.Hubs
             await Clients.Group(group).SendAsync("GameOver", true);
         }
 
+        public async Task Sendrow(string group)
+        {
+            await Clients.OthersInGroup(group).SendAsync("ReceiveRow", true);
+        }
+
         public async Task SendGame(string json, string group)
         {
             await Clients.OthersInGroup(group).SendAsync("ReceiveGame", json);

@@ -102,6 +102,13 @@ function SendGameover() {
         });
 }
 
+function SendRow() {
+    connection.invoke("Sendrow", roomid)
+        .catch(function (err) {
+            return console.error(err.toString());
+        });
+}
+
 connection.on("StartTwoPlayerGame", function (begin) {
     if (begin == true) {
         twoplayergame();
@@ -111,6 +118,12 @@ connection.on("StartTwoPlayerGame", function (begin) {
 connection.on("GameOver", function (end) {
     if (end == true) {
         resetgame();
+    }
+});
+
+connection.on("ReceiveRow", function (valid) {
+    if (valid == true) {
+        tetris.addBottomRow();
     }
 });
 
