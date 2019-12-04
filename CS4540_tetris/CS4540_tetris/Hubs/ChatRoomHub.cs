@@ -44,12 +44,17 @@ namespace CS4540_tetris.Hubs
 
         public async Task StartGame(string group)
         {
-            await Clients.Group(group).SendAsync("StartTwoPlayerGame");
+            await Clients.Group(group).SendAsync("StartTwoPlayerGame", true);
         }
 
-        public async Task SendGame(string group, string json)
+        public async Task Gameover(string group)
         {
-            await Clients.Group(group).SendAsync("ReceiveMessage", json);
+            await Clients.Group(group).SendAsync("GameOver", true);
+        }
+
+        public async Task SendGame(string json, string group)
+        {
+            await Clients.OthersInGroup(group).SendAsync("ReceiveGame", json);
         }
     }
 }

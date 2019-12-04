@@ -401,7 +401,7 @@ class Tetris {
                 }
                 // pieces to lock on top = game over
                 if (this.piece.getY() + r < 0) {
-                    alert("Game Over!\n" + "Score: " + this.score);
+                    //alert("Game Over!\n" + "Score: " + this.score);
                     // stop request animation frame
                     this.gameOver = true;
                     return;
@@ -506,13 +506,14 @@ class Tetris {
     }
 }
 
+
 cvs = document.getElementById("game");
-tetris = new Tetris(20, 10, cvs);
 players = 1;
 activegame = false;
-let dropStart = Date.now();
+dropStart = Date.now();
 
 function twoplayergame() {
+    tetris = new Tetris(20, 10, cvs);
     cvs.width = 500;
     players = 2;
     start.style.display = "hidden";
@@ -521,6 +522,7 @@ function twoplayergame() {
 }
 
 function oneplayergame() {
+    tetris = new Tetris(20, 10, cvs);
     cvs.width = 200;
     players = 1;
     start.style.display = "hidden";
@@ -531,46 +533,47 @@ function oneplayergame() {
 function resetgame() {
     start.style.display = "visible";
     activegame = false;
-    tetris = new Tetris(20, 10, cvs);
+    alert("Game Over" + tetris.getScore())
 }
 
 function gameLoop() {
-    let now = Date.now();
-    let delta = now - dropStart;
-    if (players == 2) {
-        tetris.drawExternalBoard(tetris.getTetrisJson(), 300);
-        SendGameState();
-    }
-    if (delta > 1000) {
-        tetris.movePiece(0, 1);
-        dropStart = Date.now();
-    }
-    if (!tetris.isGameOver()) {
-        requestAnimationFrame(gameLoop);
-    }
-    else {
-        resetgame();
-        tetris = new Tetris(20, 10, cvs);
-        tetris.drawExternalBoard(tetris.getTetrisJson(), 300);
+    if (activegame) {
+        let now = Date.now();
+        let delta = now - dropStart;
+        if (players == 2) {
+            SendGameState();
+        }
+        if (delta > 1000) {
+            tetris.movePiece(0, 1);
+            dropStart = Date.now();
+        }
+        if (!tetris.isGameOver()) {
+            //game is running
+            requestAnimationFrame(gameLoop);
+        }
+        else {
+            //game is over
+            SendGameover();
+        }
     }
 }
 
 document.addEventListener("keydown", control);
 
 function control(event) {
-    //event.preventDefault();
     if (activegame == true) {
         if (event.keyCode == 37) {
+            event.preventDefault();
             tetris.movePiece(-1, 0);
         } else if (event.keyCode == 38) {
+            event.preventDefault();
             tetris.rotate();
         } else if (event.keyCode == 39) {
+            event.preventDefault();
             tetris.movePiece(1, 0);
         } else if (event.keyCode == 40) {
+            event.preventDefault();
             tetris.movePiece(0, 1);
         }
     }
-}
-
-//smthn to request open rooms in the lobby, or create a new one.
-
+};

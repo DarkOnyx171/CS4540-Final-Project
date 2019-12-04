@@ -58,10 +58,9 @@ connection.on("JoinedRoom", function (user) {
     var li = document.createElement("li");
     li.textContent = encodedMsg;
     document.getElementById("messagesList").appendChild(li);
-    twoplayergame();
 });
 
-connection.on("ReceiveMessage", function (user, message) {
+connection.on("ReceiveMessage", function (user, message)  {
     var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
     var encodedMsg = user + " says " + msg;
     var li = document.createElement("li");
@@ -79,32 +78,42 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     event.preventDefault();
 });
 
-
-function InitTwoPlayerGame(event) {
+function NewGame() {
+    var room = document.getElementById("roomInput").value;
+    roomid = room;
     connection.invoke("StartGame", roomid)
         .catch(function (err) {
             return console.error(err.toString());
         });
 }
 
-function NewGameRoom(event) {
-    var room = document.getElementById("roomInput").value;
-    roomid = room;
-    connection.invoke("CreateRoom", room).catch(function (err) {
-        return console.error(err.toString());
-    });
-
-    InitTwoPlayerGame();
-}
-
 function SendGameState() {
-    json = tetris.getTetrisJson();
-    connection.invoke("SendMessage", user, json, roomid)
+    var json = tetris.getTetrisJson();
+    connection.invoke("SendGame", json, roomid)
         .catch(function (err) {
             return console.error(err.toString());
         });
 }
 
+function SendGameover() {
+    connection.invoke("Gameover", roomid)
+        .catch(function (err) {
+            return console.error(err.toString());
+        });
+}
+
+connection.on("StartTwoPlayerGame", function (begin) {
+    if (begin == true) {
+        twoplayergame();
+    }
+});
+
+connection.on("GameOver", function (end) {
+    if (end == true) {
+        resetgame();
+    }
+});
+
 connection.on("ReceiveGame", function (json) {
-    console.log(json);
+    tetris.drawExternalBoard(json, 300);
 });
