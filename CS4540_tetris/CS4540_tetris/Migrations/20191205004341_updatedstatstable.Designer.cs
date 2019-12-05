@@ -4,14 +4,16 @@ using CS4540_tetris.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CS4540_tetris.Migrations
 {
     [DbContext(typeof(ScoreContext))]
-    partial class ScoreContextModelSnapshot : ModelSnapshot
+    [Migration("20191205004341_updatedstatstable")]
+    partial class updatedstatstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -26,7 +26,7 @@ namespace CS4540_tetris.Data
             usercontext.Database.Migrate();
             await SeedUsers(userManager);
             SeedScores(gamedatacontext);
-            await SeedPlayerStats(gamedatacontext);
+            SeedPlayerStats(gamedatacontext);
             SeedNotes(gamedatacontext);
         }
 
@@ -50,31 +50,17 @@ namespace CS4540_tetris.Data
             var notes = new StatNotes[]
             {
             new StatNotes{
-                gameUser = new GameUser
-                {
-                    UserName = "gamegorl@tetrominoes.com",
-                    NickName = "Gorl",
-                    Email = "gamegorl@tetrominoes.com",
-                    EmailConfirmed = true
-                },
-                note = "Congrats on your great score!",
-                Time_Modified = DateTime.Now,
-                liked = 2,
-                userName = "gameboi@tetrominoes.com",
+                Note = "Congrats on your great score!",
+                TimeModified = DateTime.Now,
+                Liked = 2,
+                UserName = "gameboi@tetrominoes.com",
                 StatID = firststat.PlayerStatsID,
             },
             new StatNotes{
-                gameUser = new GameUser
-                {
-                    UserName = "gameboi@tetrominoes.com",
-                    NickName = "Boi",
-                    Email = "gameboi@tetrominoes.com",
-                    EmailConfirmed = true
-                },
-                note = "Go back to space!",
-                Time_Modified = DateTime.Now,
-                liked = 100,
-                userName = "gamealien@tetrominoes.com",
+                Note = "Go back to space!",
+                TimeModified = DateTime.Now,
+                Liked = 100,
+                UserName = "gamealien@tetrominoes.com",
                 StatID = secondstat.PlayerStatsID,
             },
             };
@@ -100,10 +86,10 @@ namespace CS4540_tetris.Data
         /// <param name="scorecontext"></param>
         /// <param name="usercontext"></param>
         /// <param name="userManager"></param>
-        public static async Task SeedPlayerStats(ScoreContext statscontext)
+        public static void SeedPlayerStats(ScoreContext scorecontext)
         {
             // Look for any stats
-            if (statscontext.PlayerStats.Any())
+            if (scorecontext.PlayerStats.Any())
             {
                 return;   // DB has been seeded
             }
@@ -158,12 +144,12 @@ namespace CS4540_tetris.Data
             };
             foreach (PlayerStats s in stats)
             {
-                await statscontext.PlayerStats.AddAsync(s);
+                scorecontext.PlayerStats.Add(s);
             }
 
             try
             {
-                await statscontext.SaveChangesAsync();
+                scorecontext.SaveChanges();
             }
             catch (Exception e)
             {

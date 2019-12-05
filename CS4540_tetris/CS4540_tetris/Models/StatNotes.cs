@@ -10,14 +10,13 @@ namespace CS4540_tetris.Models
     public class StatNotes
     {
         [Key]
-        public int noteID { get; set; }
-        public string note { get; set; }
-        public string userName  { get; set; }
-        public GameUser gameUser { get; set; }
-        public int liked { get; set; } //maybe have a button for people to like buttons TODO
+        public int NoteID { get; set; }
+        public string Note { get; set; }
+        public string UserName  { get; set; }
+        public int Liked { get; set; } //maybe have a button for people to like buttons TODO
         [ScaffoldColumn(false)]
-        public DateTime Time_Modified { get; set; }
-        public PlayerStats stat { get; set; }
+        public DateTime TimeModified { get; set; }
+        public PlayerStats Stat { get; set; }
         public int StatID { get; set; }
     }
 }

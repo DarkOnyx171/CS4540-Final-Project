@@ -18,14 +18,14 @@ namespace CS4540_tetris.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        //TO establish a DB for this controller
         private readonly ScoreContext _scorecontext;
         private readonly UserContext _usercontext;
 
-        public HomeController(ILogger<HomeController> logger, ScoreContext scorecontext)
+        public HomeController(ILogger<HomeController> logger, ScoreContext scorecontext, UserContext usercontext)
         {
             _logger = logger;
             _scorecontext = scorecontext;
+            _usercontext = usercontext;
         }
 
         //accessible to everyone
@@ -47,7 +47,7 @@ namespace CS4540_tetris.Controllers
         {
             //using (var context = new ScoreContext())
             //{
-                var stats = _scorecontext.PlayerStats.OrderBy(player => player.UserName).Include(c => c.Note).ThenInclude(c => c.gameUser)
+                var stats = _scorecontext.PlayerStats.OrderBy(player => player.UserName).Include(c => c.Note)
                     .AsNoTracking();
                 return View(stats.ToList());
             //}
@@ -73,43 +73,42 @@ namespace CS4540_tetris.Controllers
         /// </summary>
         /// <param name="passednote">the note info</param>
         /// <param name="note_id">the note id</param>
-        /// <param name="statID">the learning objective it is tied to</param>
+        /// <param name="statID">the stat it is tied to</param>
         /// <returns>JSON success</returns>
         [HttpPost]
         public JsonResult ChangeStatNote(string passednote, int note_id, int statID)
         {
-            //if(_context.LO_Notes.Find(note_id) != null)
-            var note_from_db = _scorecontext.StatNotes.Find(note_id);
+            DateTime time = DateTime.Now;
             //no note exists
-            if (note_from_db == null)
+            if (note_id == 0)
             {
-                note_from_db = new StatNotes
+                StatNotes note_from_db = new StatNotes
                 {
-                    note = passednote,
-                    StatID = statID, //what should this be TODO
-                    Time_Modified = DateTime.Now,
+                    Note = passednote,
+                    StatID = statID,
+                    TimeModified =time,
                 };
                 _scorecontext.StatNotes.Add(note_from_db);
-            }
-            //deleting a note
-            else if (passednote == null && note_from_db != null)
-            {
-                _scorecontext.StatNotes.Remove(note_from_db);
             }
             //updating a note
             else
             {
-                note_from_db.note = passednote;
-                note_from_db.Time_Modified = DateTime.Now;
+                StatNotes note_from_db = _scorecontext.StatNotes.Where(o => o.NoteID == note_id).Single();
+                note_from_db.Note = passednote;
+                note_from_db.TimeModified =time;
+                _scorecontext.Update(note_from_db);
             }
             _scorecontext.SaveChanges();
+
+            if (note_id == 0)
+                note_id = _scorecontext.StatNotes.Where(o => o.Note == passednote).Single().NoteID;
 
             return Json(new
             {
                 success = true,
                 note = passednote,
-                id = note_from_db.StatID,
-                statID = statID
+                id = note_id,
+                time = time.ToString()
             });
         }
 
