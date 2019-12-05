@@ -161,6 +161,7 @@ namespace CS4540_tetris.Controllers
                     highScore.GameMode = is_multi ? GameMode.Multi_Player : GameMode.Single_Player;
                 }
                 _scorecontext.PlayerStats.Update(playerStats);
+                _scorecontext.Scores.Update(highScore);
             }
 
             _scorecontext.SaveChanges();
