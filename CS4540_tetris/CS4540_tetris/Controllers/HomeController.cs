@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CS4540_tetris.Controllers
 {
     //accessible to only logged in users unless overwritten for specific view
-    
+
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -47,9 +47,9 @@ namespace CS4540_tetris.Controllers
         {
             //using (var context = new ScoreContext())
             //{
-                var stats = _scorecontext.PlayerStats.OrderBy(player => player.UserName).Include(c => c.Note)
-                    .AsNoTracking();
-                return View(stats.ToList());
+            var stats = _scorecontext.PlayerStats.OrderBy(player => player.UserName).Include(c => c.Note)
+                .AsNoTracking();
+            return View(stats.ToList());
             //}
             //return View(_scorecontext.PlayerStats.OrderBy(player => player.UserName).ToList());
         }
@@ -86,7 +86,7 @@ namespace CS4540_tetris.Controllers
                 {
                     Note = passednote,
                     StatID = statID,
-                    TimeModified =time,
+                    TimeModified = time,
                 };
                 _scorecontext.StatNotes.Add(note_from_db);
             }
@@ -95,7 +95,7 @@ namespace CS4540_tetris.Controllers
             {
                 StatNotes note_from_db = _scorecontext.StatNotes.Where(o => o.NoteID == note_id).Single();
                 note_from_db.Note = passednote;
-                note_from_db.TimeModified =time;
+                note_from_db.TimeModified = time;
                 _scorecontext.Update(note_from_db);
             }
             _scorecontext.SaveChanges();
@@ -110,6 +110,62 @@ namespace CS4540_tetris.Controllers
                 id = note_id,
                 time = time.ToString()
             });
+        }
+
+        [Route("SaveScore")]
+        [HttpPost]
+        [Authorize]
+        public JsonResult SaveScore(int score, int duration, bool is_multi)
+        {
+            // Name, Score, Mode
+            // Name, Score, Last Date, Total time, Longest time, Games Played.
+            DateTime time = DateTime.Today;
+            TimeSpan timePlayed = new TimeSpan(0, 0, duration / 1000);
+            PlayerStats playerStats = _scorecontext.PlayerStats.Where(o => o.UserName == User.Identity.Name).FirstOrDefault();
+            Score highScore = _scorecontext.Scores.Where(o => o.UserName == User.Identity.Name).FirstOrDefault();
+            if (playerStats is null)
+            {
+                playerStats = new PlayerStats
+                {
+                    HighestScore = score,
+                    LastGameDate = time,
+                    LongestGame = timePlayed,
+                    TotalTimePlayed = timePlayed,
+                    UserName = User.Identity.Name,
+                    GamesPlayed = 1
+                };
+                highScore = new Score
+                {
+                    GameMode = is_multi ? GameMode.Multi_Player : GameMode.Single_Player,
+                    Nickname = User.Identity.Name,
+                    Value = score,
+                    UserName = User.Identity.Name
+                };
+                _scorecontext.PlayerStats.Add(playerStats);
+                _scorecontext.Scores.Add(highScore);
+            }
+            else
+            {
+                playerStats.GamesPlayed++;
+                playerStats.HighestScore = Math.Max(playerStats.HighestScore, score);
+                playerStats.TotalTimePlayed += timePlayed;
+                if (timePlayed > playerStats.LongestGame)
+                {
+                    playerStats.LongestGame = timePlayed;
+                }
+                playerStats.LastGameDate = time;
+
+                if (highScore.Value < score)
+                {
+                    highScore.Value = score;
+                    highScore.GameMode = is_multi ? GameMode.Multi_Player : GameMode.Single_Player;
+                }
+                _scorecontext.PlayerStats.Update(playerStats);
+            }
+
+            _scorecontext.SaveChanges();
+
+            return null;
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

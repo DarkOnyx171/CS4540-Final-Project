@@ -230,7 +230,7 @@ class Piece {
 class Tetris {
     
 
-    constructor(num_rows, num_cols, cvs) {
+    constructor(num_rows, num_cols, cvs, is_multi = false) {
         // Limit num_rows between [10-30] 
         if (num_rows > 30) {
             num_rows = 30;
@@ -260,6 +260,10 @@ class Tetris {
         this.piece = this.randomPiece();
         this.drawBoard();
         this.gameOver = false;
+
+        var date = new Date();
+        this.startTime = date.getTime();
+        this.is_multi = is_multi;
     }
 
     drawSquare(x, y, color, offset = 0) {
@@ -401,9 +405,10 @@ class Tetris {
                 }
                 // pieces to lock on top = game over
                 if (this.piece.getY() + r < 0) {
-                    //alert("Game Over!\n" + "Score: " + this.score);
                     // stop request animation frame
                     this.gameOver = true;
+                    var end = new Date();
+                    this.duration = end.getTime() - this.startTime;
                     return;
                 }
                 // we lock the piece
@@ -422,7 +427,7 @@ class Tetris {
                 this.score += 100;
                 document.getElementById("score").innerText = this.score;
                 this.scorestreak++;
-                if (this.scorestreak == 3) {
+                if (this.scorestreak == 3 && this.is_multi) {
                     SendRow();
                     this.scorestreak = 0;
                 }
@@ -458,6 +463,15 @@ class Tetris {
 
     getScore() {
         return this.score;
+    }
+
+    getDuration() {
+        if (this.gameOver) {
+            return this.duration;
+        } else {
+            var current = new Date();
+            return current.getTime() - this.startTime;
+        }
     }
 
     getTetrisJson() {
@@ -520,7 +534,7 @@ activegame = false;
 dropStart = Date.now();
 
 function twoplayergame() {
-    tetris = new Tetris(20, 10, cvs);
+    tetris = new Tetris(20, 10, cvs, true);
     cvs.width = 500;
     players = 2;
     start.style.display = "hidden";
@@ -541,6 +555,22 @@ function resetgame() {
     start.style.display = "visible";
     activegame = false;
     alert("Game Over" + tetris.getScore())
+    saveScore();
+}
+
+function saveScore() {
+    debugger;
+    $.ajax({
+        url: "/SaveScore",
+        method: "POST",
+        data: {
+            score: tetris.getScore(),
+            duration: tetris.getDuration(),
+            is_single: players == 2,
+        }
+    }).done(function (result) {
+        // Do something
+    });
 }
 
 function gameLoop() {
