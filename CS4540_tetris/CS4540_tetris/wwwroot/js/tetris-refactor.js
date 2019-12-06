@@ -554,7 +554,11 @@ function oneplayergame() {
 function resetgame() {
     start.style.display = "visible";
     activegame = false;
-    alert("Game Over" + tetris.getScore())
+    swal({
+        title: "Game Over!",
+        text: "Score: " + tetris.getScore(),
+        button: "Okay"
+    });
     saveScore();
 }
 
