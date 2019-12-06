@@ -6,12 +6,14 @@
 
   We, Tetrominoes, certify that We wrote this code from scratch and did not copy it in part or whole from
   another source.  Any references used in the completion of the assignment are cited in my README file.
-    Purpose: The purpose of this document is to supply an overview and tutorial
+    Purpose: The purpose of this document is have a single player page for tetrominoes
 -->
 
 @{
-    ViewData["Title"] = "Overview";
+    ViewData["Title"] = "Single Player";
 }
+
+<script src="~/lib/pixi/pixi.min.js"></script>
 <!DOCTYPE html>
 <html>
 
@@ -20,7 +22,7 @@
         <meta charset="UTF-8" />
         <meta name="description" content="The High Scores of the Tetro Games" />
         <meta name="keywords" content="HTML, CSS" />
-        <meta name="author" content="Tetrominoes Team" />
+        <meta name="author" content="Jaecee Naylor" />
         <!--Used to change with size of device-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>High Scores</title>
@@ -32,10 +34,22 @@
             <!--Jumbo tron from https://getbootstrap.com/docs/4.0/components/jumbotron/ -->
             <div class="jumbotron jumbotron-fluid">
                 <div class="container">
-                    <h1 class="display-4">Overview</h1>
+                    <h1 class="display-4">Single Player Tetro</h1>
                 </div>
-                <h1>remember gamegorl is no longer seeded as if she has played a game but her user is seeded</h1>
             </div>
+            <!--Game area for single player game-->
+            <p class="game_area">
+                <div id="start">
+                    <button onclick="oneplayergame();">Start</button>
+                    <!--<button onclick="twoplayergame();">Start 2 player</button>-->
+                </div>
+                <canvas id="game" width="200" height="400"></canvas>
+                <div id="scorecontainer">
+                    Score:
+                <p id="score">0</p>
+                </div>
+                <script src="~/js/tetris-refactor.js"></script>
+            </p>
         </div>
     </body>
 </html>

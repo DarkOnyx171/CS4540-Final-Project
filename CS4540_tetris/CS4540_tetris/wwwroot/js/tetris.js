@@ -1,4 +1,13 @@
-﻿//put a header here
+﻿/// <summary>
+///  Author:    Tetrominoes Team
+///  Date:      12/6/2019
+///  Course:    CS 4540, University of Utah, School of Computing
+ /// Copyright: CS 4540 and Tetrominoes Tesm - This work may not be copied for use in Academic Coursework.
+
+ /// We, Tetrominoes Team, certify that we wrote this code from scratch and did not copy it in part or whole from
+ /// another source.  Any references used in the completion of the assignment are cited in my README file.
+   /// Purpose: The purpose of this document is to handle pixie game
+/// </summary>
 
 
 //let type = "WebGL"
@@ -26,6 +35,12 @@ const ROW = 20;
 const COL = COLUMN = 10;
 const SQ = squareSize = 20;
 const VACANT = "WHITE";
+
+//------------------------------------------------------------------------------------------
+//code transfered from constants.js
+//
+//please see that file for documentation about matrices
+//-------------------------------------------------------------------------------------------
 const I = [
     [
         [0, 0, 0, 0],
@@ -182,6 +197,7 @@ const Z = [
 //    graphics.drawRect(x*SQ, y*SQ, SQ, SQ);
 //    graphics.endFill();
 //}
+//function used to draw a square
 function drawSquare(x, y, color) {
     ctx.fillStyle = color;
     ctx.fillRect(x * SQ, y * SQ, SQ, SQ);
@@ -190,6 +206,7 @@ function drawSquare(x, y, color) {
     ctx.strokeRect(x * SQ, y * SQ, SQ, SQ);
 }
 
+//used to set up the board with empty slots
 let board = [];
 for (r = 0; r < ROW; r++) {
     board[r] = [];
@@ -212,7 +229,7 @@ function drawBoard() {
 
 drawBoard();
 
-
+//piece colors
 const PIECES = [
     [Z, "red"],
     [S, "green"],
@@ -224,7 +241,6 @@ const PIECES = [
 ];
 
 // generate random pieces
-
 function randomPiece() {
     let r = randomN = Math.floor(Math.random() * PIECES.length) // 0 -> 6
     return new Piece(PIECES[r][0], PIECES[r][1]);
@@ -233,7 +249,6 @@ function randomPiece() {
 let p = randomPiece();
 
 // The Object Piece
-
 function Piece(tetromino, color) {
     this.tetromino = tetromino;
     this.color = color;
@@ -273,7 +288,6 @@ Piece.prototype.unDraw = function () {
 }
 
 // move Down the piece
-
 Piece.prototype.moveDown = function () {
     if (!this.collision(0, 1, this.activeTetromino)) {
         this.unDraw();

@@ -1,43 +1,78 @@
-﻿
-@{
-    ViewData["Title"] = "Matchmaking";
-}
-<h1>@ViewData["Title"]</h1>
+﻿<!--
+  Author:    Tetrominoes Team
+  Date:      12/6/2019
+  Course:    CS 4540, University of Utah, School of Computing
+  Copyright: CS 4540 and Tetrominoes - This work may not be copied for use in Academic Coursework.
 
-<div class="col-4"><input type="text" id="userInput" value="@ViewData["username"]" disabled hidden /></div>
-<div class="container">
-    <div class="row">
-        <div class="col-1">Room Name</div>
-        <div class="col-4"><input style="width: inherit;" type="text" id="roomInput" /></div>
-        <div class="col-2"><input type="button" id="startRoomButton" value="Create New Chatroom" /></div>
-    </div>
-    <div class="row">&nbsp;</div>
-    <div class="row">
-        <select id="RoomID"></select>
-        <input type="button" id="JoinButton" value="Join Chatroom" />
-    </div>
-    <div class="row">&nbsp;</div>
-    <div class="row">
-        <div id="messagesListDiv" class="col-12" style="overflow-y: auto; height:300px;">
-            <ul id="messagesList"></ul>
+  We, Tetrominoes, certify that We wrote this code from scratch and did not copy it in part or whole from
+  another source.  Any references used in the completion of the assignment are cited in my README file.
+    Purpose: The purpose of this document is to supply matchmaking so people can play the game in dua mode
+-->
+@{
+    ViewData["Title"] = "Matchmaking for Dual";
+}
+<!DOCTYPE html>
+<html>
+
+    <!--Head of document-->
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content="The High Scores of the Tetro Games" />
+        <meta name="keywords" content="HTML, CSS" />
+        <meta name="author" content="Tetrominoes Team" />
+        <!--Used to change with size of device-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Matchmaking fro Dual</title>
+    </head>
+    <body>
+        <!--Content of web page-->
+        <!--Welcome text-->
+        <!--Jumbo tron from https://getbootstrap.com/docs/4.0/components/jumbotron/ -->
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">@ViewData["Title"]</h1>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-10">
-            <input style="width: inherit;" type="text" id="messageInput" />
+
+        <div class="col-4"><input type="text" id="userInput" value="@ViewData["username"]" disabled hidden /></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-1">Room Name</div>
+                <div class="col-4"><input style="width: inherit;" type="text" id="roomInput" /></div>
+                <div class="col-2"><input type="button" id="startRoomButton" value="Create New Chatroom" /></div>
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <select id="RoomID"></select>
+                <input type="button" id="JoinButton" value="Join Chatroom" />
+            </div>
+            <div class="row">&nbsp;</div>
+            <div class="row">
+                <div id="messagesListDiv" class="col-12" style="overflow-y: auto; height:300px;">
+                    <ul id="messagesList"></ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-10">
+                    <input style="width: inherit;" type="text" id="messageInput" />
+                </div>
+                <div class="col-2">
+                    <input type="button" id="sendButton" value="Send Message" />
+                </div>
+            </div>
         </div>
-        <div class="col-2">
-            <input type="button" id="sendButton" value="Send Message" />
+        <p class="game_area">
+            <div id="start">
+                <button onclick="NewGame();">Start 2 player</button>
+            </div>
+            <canvas id="game" width="200" height="400"></canvas>
+            <div id="scorecontainer">
+                Score:
+        <p id="score">0</p>
         </div>
-    </div>
-</div>
-<p class="game_area">
-    <div id="start">
-        <button onclick="NewGame();">Start 2 player</button>
-    </div>
-    <canvas id="game" width="200" height="400"></canvas>
-    <div id="scorecontainer"> Score:<p id="score">0</p></div>
-</p>
+        </p>
+    </body>
+</html>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/tetris-refactor.js"></script>
 <script src="~/js/chatroom.js"></script>

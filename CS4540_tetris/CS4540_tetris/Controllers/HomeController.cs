@@ -1,4 +1,15 @@
-﻿using System;
+﻿/// <summary>
+///     Author:    Tetrominoes Team
+///  Date:      12/6/2019
+///  Course:    CS 4540, University of Utah, School of Computing
+/// Copyright: CS 4540 and Tetrominoes Tesm - This work may not be copied for use in Academic Coursework.
+
+/// We, Tetrominoes Team, certify that we wrote this code from scratch and did not copy it in part or whole from
+/// another source.  Any references used in the completion of the assignment are cited in my README file.
+/// Purpose: The purpose of this document is pass information to views and handle database queries
+/// </summary>
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,55 +24,68 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CS4540_tetris.Controllers
 {
-    //accessible to only logged in users unless overwritten for specific view
-
+    /// <summary>
+    /// This controller is meant to handle all requests for our tetrominoes website :)
+    /// </summary>
     public class HomeController : Controller
     {
+        //setting up database contexts that we can use
         private readonly ILogger<HomeController> _logger;
-        private readonly ScoreContext _scorecontext;
+        private readonly GameDataContext _gamedatacontext;
         private readonly UserContext _usercontext;
 
-        public HomeController(ILogger<HomeController> logger, ScoreContext scorecontext, UserContext usercontext)
+        //constructing those based off of injections
+        public HomeController(ILogger<HomeController> logger, GameDataContext gamedatacontext, UserContext usercontext)
         {
             _logger = logger;
-            _scorecontext = scorecontext;
+            _gamedatacontext = gamedatacontext;
             _usercontext = usercontext;
         }
 
         //accessible to everyone
+        //this is the tutorial/overviewpage
         [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
 
+        
+        [AllowAnonymous]
+        //This is the single player page and is accessible by everyone
+        public IActionResult Single()
+        {
+            return View();
+        }
+
         [Authorize]
+        //the is the highest scores page
         public IActionResult Scores()
         {
             //sort the scores so we can display
-            return View(_scorecontext.Scores.OrderByDescending(hs => hs.Value).ToList());
+            return View(_gamedatacontext.Scores.OrderByDescending(hs => hs.Value).ToList());
         }
 
         [Authorize]
+        //this is the stats page and is only accessibly by logged in users
         public IActionResult Stats()
         {
-            //using (var context = new ScoreContext())
-            //{
-            var stats = _scorecontext.PlayerStats.OrderBy(player => player.UserName).Include(c => c.Note)
+            //get everyone's stats and arrange them
+            var stats = _gamedatacontext.PlayerStats.OrderBy(player => player.UserName).Include(c => c.Note)
                 .AsNoTracking();
             return View(stats.ToList());
-            //}
-            //return View(_scorecontext.PlayerStats.OrderBy(player => player.UserName).ToList());
         }
 
-        ////accessible to everyone
+        
         [AllowAnonymous]
+        //this is the messages page and anyone can send messages even if they are not logged in
         public IActionResult Messages()
         {
             return View();
         }
 
         [Authorize]
+        //this is the page used to have dual games and you have to be logged in to visit this page to track stats
         public IActionResult Dual()
         {
             ViewData["username"] = User.Identity.Name;
@@ -86,22 +110,22 @@ namespace CS4540_tetris.Controllers
                 {
                     Note = passednote,
                     StatID = statID,
-                    TimeModified = time,
+                    TimeModified =time,
                 };
-                _scorecontext.StatNotes.Add(note_from_db);
+                _gamedatacontext.StatNotes.Add(note_from_db);
             }
             //updating a note
             else
             {
-                StatNotes note_from_db = _scorecontext.StatNotes.Where(o => o.NoteID == note_id).Single();
+                StatNotes note_from_db = _gamedatacontext.StatNotes.Where(o => o.NoteID == note_id).Single();
                 note_from_db.Note = passednote;
-                note_from_db.TimeModified = time;
-                _scorecontext.Update(note_from_db);
+                note_from_db.TimeModified =time;
+                _gamedatacontext.Update(note_from_db);
             }
-            _scorecontext.SaveChanges();
+            _gamedatacontext.SaveChanges();
 
             if (note_id == 0)
-                note_id = _scorecontext.StatNotes.Where(o => o.Note == passednote).Single().NoteID;
+                note_id = _gamedatacontext.StatNotes.Where(o => o.Note == passednote).Single().NoteID;
 
             return Json(new
             {
@@ -112,63 +136,10 @@ namespace CS4540_tetris.Controllers
             });
         }
 
-        [Route("SaveScore")]
-        [HttpPost]
-        [Authorize]
-        public JsonResult SaveScore(int score, int duration, bool is_multi)
-        {
-            // Name, Score, Mode
-            // Name, Score, Last Date, Total time, Longest time, Games Played.
-            DateTime time = DateTime.Today;
-            TimeSpan timePlayed = new TimeSpan(0, 0, duration / 1000);
-            PlayerStats playerStats = _scorecontext.PlayerStats.Where(o => o.UserName == User.Identity.Name).FirstOrDefault();
-            Score highScore = _scorecontext.Scores.Where(o => o.UserName == User.Identity.Name).FirstOrDefault();
-            if (playerStats is null)
-            {
-                playerStats = new PlayerStats
-                {
-                    HighestScore = score,
-                    LastGameDate = time,
-                    LongestGame = timePlayed,
-                    TotalTimePlayed = timePlayed,
-                    UserName = User.Identity.Name,
-                    GamesPlayed = 1
-                };
-                highScore = new Score
-                {
-                    GameMode = is_multi ? GameMode.Multi_Player : GameMode.Single_Player,
-                    Nickname = User.Identity.Name,
-                    Value = score,
-                    UserName = User.Identity.Name
-                };
-                _scorecontext.PlayerStats.Add(playerStats);
-                _scorecontext.Scores.Add(highScore);
-            }
-            else
-            {
-                playerStats.GamesPlayed++;
-                playerStats.HighestScore = Math.Max(playerStats.HighestScore, score);
-                playerStats.TotalTimePlayed += timePlayed;
-                if (timePlayed > playerStats.LongestGame)
-                {
-                    playerStats.LongestGame = timePlayed;
-                }
-                playerStats.LastGameDate = time;
-
-                if (highScore.Value < score)
-                {
-                    highScore.Value = score;
-                    highScore.GameMode = is_multi ? GameMode.Multi_Player : GameMode.Single_Player;
-                }
-                _scorecontext.PlayerStats.Update(playerStats);
-                _scorecontext.Scores.Update(highScore);
-            }
-
-            _scorecontext.SaveChanges();
-
-            return null;
-        }
-
+        /// <summary>
+        /// meh... it was here
+        /// </summary>
+        /// <returns></returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

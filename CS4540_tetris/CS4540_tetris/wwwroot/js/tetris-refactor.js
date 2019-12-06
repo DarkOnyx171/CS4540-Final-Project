@@ -1,6 +1,22 @@
+/// <summary>
+///  Author:    Tetrominoes Team
+///  Date:      12/6/2019
+///  Course:    CS 4540, University of Utah, School of Computing
+ /// Copyright: CS 4540 and Tetrominoes Tesm - This work may not be copied for use in Academic Coursework.
+
+ /// We, Tetrominoes Team, certify that we wrote this code from scratch and did not copy it in part or whole from
+ /// another source.  Any references used in the completion of the assignment are cited in my README file.
+   /// Purpose: The purpose of this document is to handle the tetris game
+/// </summary>
+
 const SQ = 20;
 const VACANT = "white";
 
+//------------------------------------------------------------------------------------------
+//code transfered from constants.js
+//
+//please see that file for documentation about matrices
+//-------------------------------------------------------------------------------------------
 const I = [
     [
         [0, 0, 0, 0],
@@ -162,6 +178,11 @@ const PIECES = [
     [J, "orange"]
 ];
 
+//------------------------------------------------------------------------------------------
+//code transfered from piece.js
+//
+//please see that file for documentation about matrices
+//-------------------------------------------------------------------------------------------
 class Piece {
     constructor(tetromino, color) {
         this.tetromino = tetromino;
@@ -227,10 +248,9 @@ class Piece {
     }
 }
 
+//a class to handle the tetris game
 class Tetris {
-    
-
-    constructor(num_rows, num_cols, cvs, is_multi = false) {
+    constructor(num_rows, num_cols, cvs) {
         // Limit num_rows between [10-30] 
         if (num_rows > 30) {
             num_rows = 30;
@@ -260,10 +280,6 @@ class Tetris {
         this.piece = this.randomPiece();
         this.drawBoard();
         this.gameOver = false;
-
-        var date = new Date();
-        this.startTime = date.getTime();
-        this.is_multi = is_multi;
     }
 
     drawSquare(x, y, color, offset = 0) {
@@ -405,10 +421,9 @@ class Tetris {
                 }
                 // pieces to lock on top = game over
                 if (this.piece.getY() + r < 0) {
+                    //alert("Game Over!\n" + "Score: " + this.score);
                     // stop request animation frame
                     this.gameOver = true;
-                    var end = new Date();
-                    this.duration = end.getTime() - this.startTime;
                     return;
                 }
                 // we lock the piece
@@ -427,7 +442,7 @@ class Tetris {
                 this.score += 100;
                 document.getElementById("score").innerText = this.score;
                 this.scorestreak++;
-                if (this.scorestreak == 3 && this.is_multi) {
+                if (this.scorestreak == 3) {
                     SendRow();
                     this.scorestreak = 0;
                 }
@@ -463,15 +478,6 @@ class Tetris {
 
     getScore() {
         return this.score;
-    }
-
-    getDuration() {
-        if (this.gameOver) {
-            return this.duration;
-        } else {
-            var current = new Date();
-            return current.getTime() - this.startTime;
-        }
     }
 
     getTetrisJson() {
@@ -534,7 +540,7 @@ activegame = false;
 dropStart = Date.now();
 
 function twoplayergame() {
-    tetris = new Tetris(20, 10, cvs, true);
+    tetris = new Tetris(20, 10, cvs);
     cvs.width = 500;
     players = 2;
     start.style.display = "hidden";
@@ -554,27 +560,7 @@ function oneplayergame() {
 function resetgame() {
     start.style.display = "visible";
     activegame = false;
-    swal({
-        title: "Game Over!",
-        text: "Score: " + tetris.getScore(),
-        button: "Okay"
-    });
-    saveScore();
-}
-
-function saveScore() {
-    debugger;
-    $.ajax({
-        url: "/SaveScore",
-        method: "POST",
-        data: {
-            score: tetris.getScore(),
-            duration: tetris.getDuration(),
-            is_single: players == 2,
-        }
-    }).done(function (result) {
-        // Do something
-    });
+    alert("Game Over" + tetris.getScore())
 }
 
 function gameLoop() {
