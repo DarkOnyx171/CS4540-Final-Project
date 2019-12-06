@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CS4540_tetris.Migrations
 {
-    [DbContext(typeof(ScoreContext))]
+    [DbContext(typeof(GameDataContext))]
     [Migration("20191111233935_InitialCreate")]
     partial class InitialCreate
     {

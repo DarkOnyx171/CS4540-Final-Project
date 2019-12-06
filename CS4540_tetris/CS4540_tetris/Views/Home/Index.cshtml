@@ -18,7 +18,7 @@
     <!--Head of document-->
     <head>
         <meta charset="UTF-8" />
-        <meta name="description" content="The High Scores of the Tetro Games" />
+        <meta name="description" content="Overview" />
         <meta name="keywords" content="HTML, CSS" />
         <meta name="author" content="Tetrominoes Team" />
         <!--Used to change with size of device-->
@@ -27,14 +27,73 @@
     </head>
     <!--body of document-->
     <body>
+        <!--On your menu bar, you should have a "overview" link which brings up a web page giving an overview of your project.
+    This overview should contain (1) important aspects and features of the project,
+    (2) "how to use" the project, and (3) any non-obvious contributions (e.g., significant DB work).-->
         <div class="text-center">
             <!--Welcome text-->
             <!--Jumbo tron from https://getbootstrap.com/docs/4.0/components/jumbotron/ -->
             <div class="jumbotron jumbotron-fluid">
                 <div class="container">
-                    <h1 class="display-4">Overview</h1>
+                    <h1 class="display-2">Overview</h1>
+                    <p class="lead">Tetrominoes is a version of the common known Tetris game online created by the Tetrominoes Team.</p>
                 </div>
-                <h1>remember gamegorl is no longer seeded as if she has played a game but her user is seeded</h1>
+            </div>
+        </div>
+        <h1 class="display-4">Important Aspects and Features of Tetrominoes</h1>
+        <br />
+        <div class="row">
+            <div class="col pb-2">
+                <h2 class="text-dark">Features</h2>
+                <ul class="text-dark">
+                    <li>True multiplayer</li>
+                    <li>Chat rooms and matchmaking capabilities</li>
+                    <li>Comments on player statistics</li>
+                    <li>Alerts when losing</li>
+                    <li>Passing rows to another player when one has cleared three rows</li>
+                    <li>Upon registering, email confirmation</li>
+                </ul>
+            </div>
+            <div class="col pb-2">
+                <h2 class="text-dark">Aspects</h2>
+                <ul class="text-dark">
+                    <li>User authentication</li>
+                    <li>Database seeding</li>
+                    <li>User authorization pages</li>
+                    <li>Bootstrap orientated</li>
+                    <li>Use of SignalR for mutiplayer possibilities</li>
+                    <li>Use of Pixi for game</li>
+                    <li>Lots of JavaScript</li>
+                </ul>
+            </div>
+        </div>
+        <p></p>
+        <h1 class="display-4">How to use the Tetrominoes application</h1>
+        <div class="row">
+            <div class="col pb-2">
+                <h2 class="text-dark">Single Player</h2>
+                <p class="text-dark">To play Tetrominoes, anyone can visit the Single Player page and click the start button.</p>
+                <p class="text-dark">Once the game has began, pieces can be moved using the left and right arrows, pieces can change orientation using the up arrow, and peices can fall faster using the down arrow.</p>
+                <p class="text-dark">One a row has no vacant slots, the row is cleared and the score is increased. Once the blocks hit the top of the game board, the game is over and the user is informed of their score.</p>
+            </div>
+            <div class="col pb-2">
+                <h2 class="text-dark">Multiply Player</h2>
+                <p class="text-dark">To play multiplayer Tetrominoes, logged in users can visit the Dual Player page and create a dual chatroom if one does not exist or join an existing chatroom. From here you can speak with other users in the chatroom and start a 2 player Tetrominoes game.</p>
+                <p class="text-dark">Once the game has began, pieces can be moved using the left and right arrows, pieces can change orientation using the up arrow, and peices can fall faster using the down arrow.</p>
+                <p class="text-dark">The other player's game is visibile as well so you can see how both player's are navigating through the game.</p>
+            </div>
+        </div>
+        <br/>
+        <p></p>
+        <div class="row">
+            <div class="col pb-2">
+                <h2 class="text-dark">Chat room</h2>
+                <p class="text-dark">To visit a chat room without matchmaking capabilities just access the Messages page and here anyone can communicate by putting in a chat name and sending messages.</p>
+            </div>
+            <div class="col pb-2">
+                <h2 class="text-dark">Preview high scores, player stats, and leave comments</h2>
+                <p class="text-dark">To preview scores and player statistics, please visit the High Scores and Player Stats page when logged in.</p>
+                <p class="text-dark">When on the Player Stats page it is possible to leave a comment on a players's stats.</p>
             </div>
         </div>
     </body>

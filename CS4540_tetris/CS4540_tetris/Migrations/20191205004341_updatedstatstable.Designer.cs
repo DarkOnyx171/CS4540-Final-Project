@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CS4540_tetris.Migrations
 {
-    [DbContext(typeof(ScoreContext))]
+    [DbContext(typeof(GameDataContext))]
     [Migration("20191205004341_updatedstatstable")]
     partial class updatedstatstable
     {

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CS4540_tetris.Migrations
 {
-    [DbContext(typeof(ScoreContext))]
+    [DbContext(typeof(GameDataContext))]
     partial class ScoreContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

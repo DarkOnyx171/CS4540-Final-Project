@@ -12,9 +12,9 @@ namespace CS4540_tetris.Views
 {
     public class ScoresModel : PageModel
     {
-        private readonly CS4540_tetris.Data.ScoreContext _context;
+        private readonly CS4540_tetris.Data.GameDataContext _context;
 
-        public ScoresModel(CS4540_tetris.Data.ScoreContext context)
+        public ScoresModel(CS4540_tetris.Data.GameDataContext context)
         {
             _context = context;
         }
