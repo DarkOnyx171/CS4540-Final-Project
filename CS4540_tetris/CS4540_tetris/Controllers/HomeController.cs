@@ -136,8 +136,73 @@ namespace CS4540_tetris.Controllers
             });
         }
 
+
         /// <summary>
-        /// meh... it was here
+        /// Designed to change the database when an a tetris game is over.
+        /// </summary>
+        /// <param name="score">the score</param>
+        /// <param name="duration">the game duration (ms)</param>
+        /// <param name="is_multi">is this a multiplayer game</param>
+        /// <returns>JSON success</returns>
+        [Route("SaveScore")]
+        [HttpPost]	
+        [Authorize]
+        public JsonResult SaveScore(int score, int duration, bool is_multi)
+        {
+            // Name, Score, Mode	
+            // Name, Score, Last Date, Total time, Longest time, Games Played.	
+            DateTime time = DateTime.Today;
+            TimeSpan timePlayed = new TimeSpan(0, 0, duration / 1000);
+            PlayerStats playerStats = _gamedatacontext.PlayerStats.Where(o => o.UserName == User.Identity.Name).FirstOrDefault();
+            Score highScore = _gamedatacontext.Scores.Where(o => o.UserName == User.Identity.Name).FirstOrDefault();
+            if (playerStats is null)
+            {
+                playerStats = new PlayerStats
+                {
+                    HighestScore = score,
+                    LastGameDate = time,
+                    LongestGame = timePlayed,
+                    TotalTimePlayed = timePlayed,
+                    UserName = User.Identity.Name,
+                    GamesPlayed = 1
+                };
+                highScore = new Score
+                {
+                    GameMode = is_multi ? GameMode.Multi_Player : GameMode.Single_Player,
+                    Nickname = User.Identity.Name,
+                    Value = score,
+                    UserName = User.Identity.Name
+                };
+                _gamedatacontext.PlayerStats.Add(playerStats);
+                _gamedatacontext.Scores.Add(highScore);
+            }
+            else
+            {
+                playerStats.GamesPlayed++;
+                playerStats.HighestScore = Math.Max(playerStats.HighestScore, score);
+                playerStats.TotalTimePlayed += timePlayed;
+                if (timePlayed > playerStats.LongestGame)
+                {
+                    playerStats.LongestGame = timePlayed;
+                }
+                playerStats.LastGameDate = time;
+
+                if (highScore.Value < score)
+                {
+                    highScore.Value = score;
+                    highScore.GameMode = is_multi ? GameMode.Multi_Player : GameMode.Single_Player;
+                }
+                _gamedatacontext.PlayerStats.Update(playerStats);
+                _gamedatacontext.Scores.Update(highScore);
+            }
+
+            _gamedatacontext.SaveChanges();
+
+            return null;
+        }
+
+        /// <summary>
+        /// Default Error
         /// </summary>
         /// <returns></returns>
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
