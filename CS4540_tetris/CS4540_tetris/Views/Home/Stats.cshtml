@@ -49,7 +49,7 @@
                 <tr>
                     <th scope="col">
                         <!--TODO Make this nickname when it is the user-->
-                        @Html.DisplayNameFor(model => model.User.NickName)
+                        @Html.DisplayNameFor(model => model.UserName)
                     </th>
                     <th scope="col">
                         @Html.DisplayNameFor(model => model.HighestScore)
@@ -77,7 +77,7 @@
                     //TODO have display nickname when using user after being seeded is corrected
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => item.User.NickName)
+                            @Html.DisplayFor(modelItem => item.UserName)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.HighestScore)
