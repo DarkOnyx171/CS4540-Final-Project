@@ -39,6 +39,11 @@ namespace CS4540_tetris
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.Configure<IISOptions>(op =>
+            {
+                op.ForwardClientCertificate = false;
+            });
+
             services.AddMvc();
 
             services.AddDbContext<GameDataContext>(options =>
